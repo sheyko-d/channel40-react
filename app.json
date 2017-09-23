@@ -1,23 +1,29 @@
 {
   "expo": {
-    "name": "channel40",
-    "description": "An empty new project",
-    "slug": "channel40",
+    "name": "Channel40",
+    "description": "The easiest way to find loads and get paid.",
+    "slug": "Channel40",
     "privacy": "public",
-    "sdkVersion": "21.0.0",
+    "sdkVersion": "20.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
-    "primaryColor": "#cccccc",
+    "primaryColor": "#6c7073",
     "icon": "./assets/icons/app-icon.png",
-    "loading": {
-      "icon": "./assets/icons/loading-icon.png"
-    },
     "androidStatusBarColor": "#202933",
+    "loading": {
+      "backgroundColor": "#202933",
+      "icon": "./assets/icons/empty_icon.png",
+      "hideExponentText": true,
+    },
     "packagerOpts": {
       "assetExts": ["ttf", "mp4"]
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.channel40.react"
+    },
+    "android": {
+      "package": "com.channel40.react"
     }
   }
 }

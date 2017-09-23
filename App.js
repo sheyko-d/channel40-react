@@ -1,7 +1,18 @@
 import React from "react";
-import { AppRegistry, Text, View, Button, Image, StyleSheet } from "react-native";
+import {
+  AppRegistry,
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  Platform,
+  StatusBar
+} from "react-native";
 import { StackNavigator, NavigationActions } from "react-navigation";
-import Splash from "./src/login/Splash";
+import TimerMixin from "react-timer-mixin";
+import DriverHomeScreen from "./src/driver/DriverHomeScreen";
+import SplashScreen from "./src/login/SplashScreen";
+import { Font } from "expo";
 
 const styles = StyleSheet.create({
   container: {
@@ -34,7 +45,10 @@ const styles = StyleSheet.create({
   }
 });
 
-class HomeScreen extends React.Component {
+class LoadingScreen extends React.Component {
+  state = {
+    fontLoaded: false
+  };
   static navigationOptions = {
     title: "Welcome",
     header: null
@@ -43,24 +57,44 @@ class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <View>
+        <StatusBar barStyle="light-content" backgroundColor="#202933" />
         <Image
           style={styles.logo_background}
-          source={require("./assets/icons/loading.png")}
+          source={require("./assets/icons/loading.jpg")}
         >
-          <View style={styles.logo_wrapper}>
-            <Image
-              style={styles.logo_image}
-              fadeDuration={0}
-              source={require("./assets/icons/app_logo.png")}
-            />
-            <Button onPress={() => this.resetNavigation("Splash")} title="Press Me" />
-            <Text style={{ color: "#FFF" }}>
-              Moving loads accross Australia.
-            </Text>
-          </View>
+          {this.state.fontLoaded ? (
+            <View style={styles.logo_wrapper}>
+              <Image
+                style={styles.logo_image}
+                fadeDuration={0}
+                source={require("./assets/icons/app_logo.png")}
+              />
+              <Text style={{ color: "#FFF", fontFamily: "Akkurat-Normal" }}>
+                Moving loads accross Australia.
+              </Text>
+            </View>
+          ) : null}
         </Image>
       </View>
     );
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      "Graystroke-Regular": require("./assets/fonts/Graystroke-Regular.otf"),
+      "AvenirLTStd-Black": require("./assets/fonts/AvenirLTStd-Black.otf"),
+      "Akkurat-Normal": require("./assets/fonts/Akkurat-Normal.ttf")
+    });
+
+    this.setState({ fontLoaded: true });
+
+    this.timer = setTimeout(() => {
+      this.resetNavigation("SplashScreen");
+    }, 2000);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
   }
 
   resetNavigation = targetRoute => {
@@ -74,8 +108,10 @@ class HomeScreen extends React.Component {
 
 const SimpleApp = StackNavigator(
   {
-    Home: { screen: HomeScreen },
-    Splash: { screen: Splash }
+    LoadingScreen: { screen: LoadingScreen },
+    SplashScreen: { screen: SplashScreen },
+    DriverHomeScreen: { screen: DriverHomeScreen },
+    SplashScreen: { screen: SplashScreen }
   },
   {
     headerMode: "screen"
