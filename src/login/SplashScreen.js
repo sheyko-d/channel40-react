@@ -9,7 +9,7 @@ import {
   StatusBar,
   TouchableOpacity
 } from "react-native";
-import { StackNavigator } from "react-navigation";
+import { StackNavigator, NavigationActions } from "react-navigation";
 
 const styles = StyleSheet.create({
   splash_background: {
@@ -58,6 +58,7 @@ class DriverHomeScreen extends React.Component {
     header: null
   };
   render() {
+    const { navigate } = this.props.navigation;
     return (
       <View>
         <StatusBar barStyle="light-content" backgroundColor="#202933" />
@@ -76,7 +77,10 @@ class DriverHomeScreen extends React.Component {
             </Text>
             <View style={{ flex: 1 }} />
             <View style={styles.buttons_wrapper}>
-              <TouchableOpacity activeOpacity={0.7} onPress={this.signIn}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => navigate("DriverHomeScreen")}
+              >
                 <Text style={styles.button}>SIGN IN</Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -92,7 +96,6 @@ class DriverHomeScreen extends React.Component {
       </View>
     );
   }
-  signIn() {}
 }
 
 export default DriverHomeScreen;
