@@ -7,10 +7,13 @@ import {
   View,
   Image,
   StatusBar,
-  TouchableOpacity
+  TouchableOpacity,
+  WebView
 } from "react-native";
 import { StackNavigator, NavigationActions } from "react-navigation";
 
+var WEBVIEW_REF = "webview";
+var self;
 const styles = StyleSheet.create({
   splash_background: {
     width: "100%",
@@ -35,24 +38,32 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   button: {
+    backgroundColor: "#FFF",
+    color: "#F26522",
     textAlign: "center",
     fontFamily: "Graystroke-Regular",
-    backgroundColor: "#f26522",
-    color: "#FFF",
     borderRadius: 2,
     paddingBottom: 12,
     paddingTop: 10,
     paddingLeft: 16,
     paddingRight: 16
   },
-  create_account_button: {
+  create_account_wrapper: {
     flex: 1,
     alignSelf: "stretch",
     marginLeft: 16
+  },
+  create_account_button: {
+    backgroundColor: "#F26522",
+    color: "#FFF"
   }
 });
 
-class DriverHomeScreen extends React.Component {
+class SplashScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    self = this;
+  }
   static navigationOptions = {
     title: "Splash",
     header: null
@@ -75,20 +86,46 @@ class DriverHomeScreen extends React.Component {
             <Text style={styles.splash_slogan}>
               Moving loads accross Australia.
             </Text>
+            <View
+              style={{
+                marginTop: 30,
+                flexDirection: "row"
+              }}
+            >
+              <View
+                style={{
+                  width: 12,
+                  height: 12,
+                  borderRadius: 10 / 2,
+                  backgroundColor: "#FFFFFFCC"
+                }}
+              />
+              <View
+                style={{
+                  width: 12,
+                  height: 12,
+                  borderRadius: 10 / 2,
+                  backgroundColor: "#FFFFFF44",
+                  marginLeft: 6
+                }}
+              />
+            </View>
             <View style={{ flex: 1 }} />
             <View style={styles.buttons_wrapper}>
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => navigate("DriverHomeScreen")}
+                onPress={() => navigate("SignInScreen")}
               >
                 <Text style={styles.button}>SIGN IN</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.create_account_button}
+                style={styles.create_account_wrapper}
                 activeOpacity={0.7}
                 onPress={this.signIn}
               >
-                <Text style={styles.button}>GET YOUR FREE ACCOUNT</Text>
+                <Text style={[styles.button, styles.create_account_button]}>
+                  GET YOUR FREE ACCOUNT
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -98,4 +135,4 @@ class DriverHomeScreen extends React.Component {
   }
 }
 
-export default DriverHomeScreen;
+export default SplashScreen;

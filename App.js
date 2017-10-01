@@ -12,6 +12,7 @@ import { StackNavigator, NavigationActions } from "react-navigation";
 import TimerMixin from "react-timer-mixin";
 import DriverHomeScreen from "./src/driver/DriverHomeScreen";
 import SplashScreen from "./src/login/SplashScreen";
+import SignInScreen from "./src/login/SignInScreen";
 import { Font } from "expo";
 
 const styles = StyleSheet.create({
@@ -110,6 +111,7 @@ const SimpleApp = StackNavigator(
   {
     LoadingScreen: { screen: LoadingScreen },
     SplashScreen: { screen: SplashScreen },
+    SignInScreen: { screen: SignInScreen },
     DriverHomeScreen: { screen: DriverHomeScreen },
     SplashScreen: { screen: SplashScreen }
   },
