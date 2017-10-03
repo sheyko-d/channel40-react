@@ -13,6 +13,7 @@ import TimerMixin from "react-timer-mixin";
 import DriverHomeScreen from "./src/driver/DriverHomeScreen";
 import SplashScreen from "./src/login/SplashScreen";
 import SignInScreen from "./src/login/SignInScreen";
+import SignUpScreen from "./src/login/SignUpScreen";
 import { Font } from "expo";
 
 const styles = StyleSheet.create({
@@ -90,7 +91,7 @@ class LoadingScreen extends React.Component {
     this.setState({ fontLoaded: true });
 
     this.timer = setTimeout(() => {
-      this.resetNavigation("SplashScreen");
+      this.resetNavigation(/*"SplashScreen"*/"DriverHomeScreen");
     }, 2000);
   }
 
@@ -112,6 +113,7 @@ const SimpleApp = StackNavigator(
     LoadingScreen: { screen: LoadingScreen },
     SplashScreen: { screen: SplashScreen },
     SignInScreen: { screen: SignInScreen },
+    SignUpScreen: { screen: SignUpScreen },
     DriverHomeScreen: { screen: DriverHomeScreen },
     SplashScreen: { screen: SplashScreen }
   },

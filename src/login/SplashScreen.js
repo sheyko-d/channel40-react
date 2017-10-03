@@ -121,7 +121,7 @@ class SplashScreen extends React.Component {
               <TouchableOpacity
                 style={styles.create_account_wrapper}
                 activeOpacity={0.7}
-                onPress={this.signIn}
+                onPress={() => navigate("SignUpScreen")}
               >
                 <Text style={[styles.button, styles.create_account_button]}>
                   GET YOUR FREE ACCOUNT
