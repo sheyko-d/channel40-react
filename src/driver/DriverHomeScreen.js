@@ -8,7 +8,8 @@ import {
   TouchableHighlight,
   Image,
   StatusBar,
-  Platform
+  Platform,
+  AsyncStorage
 } from "react-native";
 import { MapView, Location, Constants, Permissions } from "expo";
 import { StackNavigator } from "react-navigation";
@@ -71,7 +72,8 @@ class DriverHomeScreen extends React.Component {
   };
 
   state = {
-    location: null,
+    latitude: null,
+    longitude: null,
     errorMessage: null
   };
   /*render() {
@@ -155,14 +157,19 @@ class DriverHomeScreen extends React.Component {
 */
 
   componentWillMount() {
-    if (Platform.OS === "android" && !Constants.isDevice) {
-      this.setState({
-        errorMessage:
-          "Oops, this will not work on Sketch in an Android emulator. Try it on your device!"
-      });
-    } else {
-      this._getLocationAsync();
+    this.updateLocation();
+  }
+
+  async updateLocation() {
+    let latitude = await AsyncStorage.getItem("latitude");
+    let longitude = await AsyncStorage.getItem("longitude")
+    latitude = JSON.parse(latitude);;
+    longitude = JSON.parse(longitude);
+    if (latitude !== null) {
+      this.setState({ latitude:latitude, longitude:longitude });
     }
+
+    this._getLocationAsync({ enableHighAccuracy: true });
   }
 
   _getLocationAsync = async () => {
@@ -174,31 +181,43 @@ class DriverHomeScreen extends React.Component {
     }
 
     let location = await Location.getCurrentPositionAsync({});
-    this.setState({ location });
+
+    await AsyncStorage.setItem(
+      "latitude",
+      JSON.stringify(location.coords.latitude)
+    );
+    await AsyncStorage.setItem(
+      "longitude",
+      JSON.stringify(location.coords.longitude)
+    );
+    this.setState({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude
+    });
   };
 
   render() {
     let text = "Waiting..";
-    var latitude2 = 0;
-    var longitude2 = 0;
+    var latitude = 0;
+    var longitude = 0;
     if (this.state.errorMessage) {
       text = this.state.errorMessage;
-    } else if (this.state.location) {
-      latitude2 = this.state.location.coords.latitude;
-      longitude2 = this.state.location.coords.longitude;
+    } else if (this.state.latitude !== null) {
+      latitude = this.state.latitude;
+      longitude = this.state.longitude;
     }
-    console.log("render = "+latitude2);
 
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="#b3430e" />
         <MapView
           style={styles.map}
+          showsUserLocation={true}
           region={{
-            latitude: latitude2,
-            longitude: longitude2,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: 0.0422,
+            longitudeDelta: 0.0021
           }}
         />
         <View style={styles.bottom_tabs}>
