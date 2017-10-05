@@ -163,7 +163,7 @@ class DriverHomeScreen extends React.Component {
   async updateLocation() {
     let latitude = await AsyncStorage.getItem("latitude");
     let longitude = await AsyncStorage.getItem("longitude")
-    latitude = JSON.parse(latitude);;
+    latitude = JSON.parse(latitude);
     longitude = JSON.parse(longitude);
     if (latitude !== null) {
       this.setState({ latitude:latitude, longitude:longitude });
