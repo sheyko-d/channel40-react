@@ -11,6 +11,7 @@ import {
 import { StackNavigator, NavigationActions } from "react-navigation";
 import TimerMixin from "react-timer-mixin";
 import DriverHomeScreen from "./src/driver/DriverHomeScreen";
+import MainScreen from "./src/driver/MainScreen";
 import SplashScreen from "./src/login/SplashScreen";
 import SignInScreen from "./src/login/SignInScreen";
 import SignUpScreen from "./src/login/SignUpScreen";
@@ -91,7 +92,7 @@ class LoadingScreen extends React.Component {
     this.setState({ fontLoaded: true });
 
     this.timer = setTimeout(() => {
-      this.resetNavigation(/*"SplashScreen"*/"DriverHomeScreen");
+      this.resetNavigation(/*"SplashScreen"*//*"DriverHomeScreen"*/"MainScreen");
     }, 2000);
   }
 
@@ -115,6 +116,7 @@ const SimpleApp = StackNavigator(
     SignInScreen: { screen: SignInScreen },
     SignUpScreen: { screen: SignUpScreen },
     DriverHomeScreen: { screen: DriverHomeScreen },
+    MainScreen: { screen: MainScreen },
     SplashScreen: { screen: SplashScreen }
   },
   {

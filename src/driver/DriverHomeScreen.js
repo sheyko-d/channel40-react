@@ -12,7 +12,7 @@ import {
   AsyncStorage
 } from "react-native";
 import { MapView, Location, Constants, Permissions } from "expo";
-import { StackNavigator } from "react-navigation";
+import { StackNavigator, TabNavigator } from "react-navigation";
 
 const styles = StyleSheet.create({
   container: {
@@ -76,85 +76,6 @@ class DriverHomeScreen extends React.Component {
     longitude: null,
     errorMessage: null
   };
-  /*render() {
-    return (
-      <View style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="#b3430e" />
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
-          }}
-        />
-        <View style={styles.bottom_tabs}>
-          <TouchableHighlight
-            style={styles.tab_column}
-            onPress={() => navigate("SecondScreen")}
-          >
-            <View>
-              <Image
-                style={styles.tab_icon}
-                source={require("../../assets/icons/ic_home.png")}
-              />
-              <Text style={styles.tab_title}>HOME</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.tab_column}
-            onPress={() => navigate("SecondScreen")}
-          >
-            <View>
-              <Image
-                style={styles.tab_icon}
-                source={require("../../assets/icons/ic_message.png")}
-              />
-              <Text style={styles.tab_title}>MESSAGES</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.tab_column}
-            onPress={() => navigate("SecondScreen")}
-          >
-            <View>
-              <Image
-                style={styles.tab_icon}
-                source={require("../../assets/icons/ic_history.png")}
-              />
-              <Text style={styles.tab_title}>MY JOBS</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.tab_column}
-            onPress={() => navigate("SecondScreen")}
-          >
-            <View>
-              <Image
-                style={styles.tab_icon}
-                source={require("../../assets/icons/ic_payment.png")}
-              />
-              <Text style={styles.tab_title}>PAYMENTS</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.tab_column}
-            onPress={() => navigate("SecondScreen")}
-          >
-            <View>
-              <Image
-                style={styles.tab_icon}
-                source={require("../../assets/icons/ic_profile.png")}
-              />
-              <Text style={styles.tab_title}>SETTINGS</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
-      </View>
-    );
-  }
-*/
 
   componentWillMount() {
     this.updateLocation();
