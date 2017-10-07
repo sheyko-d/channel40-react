@@ -63,14 +63,6 @@ const styles = StyleSheet.create({
 });
 
 class DriverHomeScreen extends React.Component {
-  static navigationOptions = {
-    title: "Channel40",
-    headerStyle: {
-      backgroundColor: "#f26522"
-    },
-    headerTitleStyle: { color: "white" }
-  };
-
   state = {
     latitude: null,
     longitude: null,
@@ -83,11 +75,11 @@ class DriverHomeScreen extends React.Component {
 
   async updateLocation() {
     let latitude = await AsyncStorage.getItem("latitude");
-    let longitude = await AsyncStorage.getItem("longitude")
+    let longitude = await AsyncStorage.getItem("longitude");
     latitude = JSON.parse(latitude);
     longitude = JSON.parse(longitude);
     if (latitude !== null) {
-      this.setState({ latitude:latitude, longitude:longitude });
+      this.setState({ latitude: latitude, longitude: longitude });
     }
 
     this._getLocationAsync({ enableHighAccuracy: true });
@@ -141,68 +133,6 @@ class DriverHomeScreen extends React.Component {
             longitudeDelta: 0.0021
           }}
         />
-        <View style={styles.bottom_tabs}>
-          <TouchableHighlight
-            style={styles.tab_column}
-            onPress={() => navigate("SecondScreen")}
-          >
-            <View>
-              <Image
-                style={styles.tab_icon}
-                source={require("../../assets/icons/ic_home.png")}
-              />
-              <Text style={styles.tab_title}>HOME</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.tab_column}
-            onPress={() => navigate("SecondScreen")}
-          >
-            <View>
-              <Image
-                style={styles.tab_icon}
-                source={require("../../assets/icons/ic_message.png")}
-              />
-              <Text style={styles.tab_title}>MESSAGES</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.tab_column}
-            onPress={() => navigate("SecondScreen")}
-          >
-            <View>
-              <Image
-                style={styles.tab_icon}
-                source={require("../../assets/icons/ic_history.png")}
-              />
-              <Text style={styles.tab_title}>MY JOBS</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.tab_column}
-            onPress={() => navigate("SecondScreen")}
-          >
-            <View>
-              <Image
-                style={styles.tab_icon}
-                source={require("../../assets/icons/ic_payment.png")}
-              />
-              <Text style={styles.tab_title}>PAYMENTS</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.tab_column}
-            onPress={() => navigate("SecondScreen")}
-          >
-            <View>
-              <Image
-                style={styles.tab_icon}
-                source={require("../../assets/icons/ic_profile.png")}
-              />
-              <Text style={styles.tab_title}>SETTINGS</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
       </View>
     );
   }

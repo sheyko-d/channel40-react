@@ -92,7 +92,7 @@ class LoadingScreen extends React.Component {
     this.setState({ fontLoaded: true });
 
     this.timer = setTimeout(() => {
-      this.resetNavigation(/*"SplashScreen"*//*"DriverHomeScreen"*/"MainScreen");
+      this.resetNavigation(/*"SplashScreen"*/"MainScreen");
     }, 2000);
   }
 
@@ -115,7 +115,6 @@ const SimpleApp = StackNavigator(
     SplashScreen: { screen: SplashScreen },
     SignInScreen: { screen: SignInScreen },
     SignUpScreen: { screen: SignUpScreen },
-    DriverHomeScreen: { screen: DriverHomeScreen },
     MainScreen: { screen: MainScreen },
     SplashScreen: { screen: SplashScreen }
   },

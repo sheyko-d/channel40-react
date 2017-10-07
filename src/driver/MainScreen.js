@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Button, ScrollView, Text, Image } from "react-native";
 import { StackNavigator, TabNavigator } from "react-navigation";
+import DriverHomeScreen from "./DriverHomeScreen";
 
 const styles = StyleSheet.create({
   container: {
@@ -57,7 +58,7 @@ const MyNavScreen = ({ navigation, banner }) => (
 );
 
 const HomeScreen = ({ navigation }) => (
-  <MyNavScreen banner="Home Screen" navigation={navigation} />
+  <DriverHomeScreen banner="Home Screen" navigation={navigation} />
 );
 
 const MessagesScreen = ({ navigation }) => (
@@ -152,8 +153,8 @@ const SimpleTabs = TabNavigator(
       inactiveTintColor: "#f26522",
       pressColor: "#00000033",
       labelStyle: {
-        fontSize: 9,        
-        fontFamily: "Graystroke-Regular",
+        fontSize: 9,
+        fontFamily: "Graystroke-Regular"
       },
       showIcon: true,
       iconStyle: {
@@ -167,5 +168,19 @@ const SimpleTabs = TabNavigator(
     }
   }
 );
+
+SimpleTabs.navigationOptions = {
+  title: "CHANNEL 40",
+  headerStyle: {
+    backgroundColor: "#f26522"
+  },
+  headerTitleStyle: {
+    color: "white",
+    alignSelf: "center",
+      fontFamily: "Graystroke-Regular",
+      fontWeight: "200",
+      fontSize: 16,
+  }
+};
 
 export default SimpleTabs;
