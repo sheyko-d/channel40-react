@@ -77,7 +77,7 @@ const ProfileScreen = ({ navigation }) => (
   <MyNavScreen banner="Profile Screen" navigation={navigation} />
 );
 
-const SimpleTabs = TabNavigator(
+const MainTabs = TabNavigator(
   {
     MainTab: {
       screen: HomeScreen,
@@ -169,18 +169,14 @@ const SimpleTabs = TabNavigator(
   }
 );
 
-SimpleTabs.navigationOptions = {
-  title: "CHANNEL 40",
-  headerStyle: {
-    backgroundColor: "#f26522"
-  },
-  headerTitleStyle: {
-    color: "white",
-    alignSelf: "center",
-      fontFamily: "Graystroke-Regular",
-      fontWeight: "200",
-      fontSize: 16,
-  }
+MainTabs.navigationOptions = {
+  drawerLabel: "Home",
+  drawerIcon: ({ tintColor }) => (
+    <Image
+      style={styles.tab_icon}
+      source={require("../../assets/icons/ic_home.png")}
+    />
+  )
 };
 
-export default SimpleTabs;
+export default MainTabs;

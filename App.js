@@ -6,12 +6,14 @@ import {
   Image,
   StyleSheet,
   Platform,
-  StatusBar
+  StatusBar,
+  TouchableOpacity
 } from "react-native";
 import { StackNavigator, NavigationActions } from "react-navigation";
 import TimerMixin from "react-timer-mixin";
 import DriverHomeScreen from "./src/driver/DriverHomeScreen";
-import MainScreen from "./src/driver/MainScreen";
+import MainTabs from "./src/driver/MainTabs";
+import MainDrawer from "./src/driver/MainDrawer";
 import SplashScreen from "./src/login/SplashScreen";
 import SignInScreen from "./src/login/SignInScreen";
 import SignUpScreen from "./src/login/SignUpScreen";
@@ -45,6 +47,11 @@ const styles = StyleSheet.create({
     width: 130,
     resizeMode: "contain",
     marginBottom: 4
+  },
+  drawer_icon: {
+    width: 20,
+    height: 20,
+    marginLeft: 20
   }
 });
 
@@ -92,7 +99,7 @@ class LoadingScreen extends React.Component {
     this.setState({ fontLoaded: true });
 
     this.timer = setTimeout(() => {
-      this.resetNavigation(/*"SplashScreen"*/"MainScreen");
+      this.resetNavigation(/*"SplashScreen"*/ /*"MainTabs"*/ "MainDrawer");
     }, 2000);
   }
 
@@ -109,13 +116,38 @@ class LoadingScreen extends React.Component {
   };
 }
 
+const DrawerButton = props => {
+  const { navigate } = props.navigation;
+  const routeIndex = props.navigation.state.index;
+  return (
+    <View>
+      <TouchableOpacity
+        onPress={() => {
+          routeIndex === 0 ? navigate("DrawerOpen") : navigate("DrawerClose");
+        }}
+      >
+        <Image
+          source={require("./assets/icons/ic_drawer.png")}
+          style={styles.drawer_icon}
+        />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 const SimpleApp = StackNavigator(
   {
     LoadingScreen: { screen: LoadingScreen },
     SplashScreen: { screen: SplashScreen },
     SignInScreen: { screen: SignInScreen },
     SignUpScreen: { screen: SignUpScreen },
-    MainScreen: { screen: MainScreen },
+    MainTabs: { screen: MainTabs },
+    MainDrawer: {
+      screen: MainDrawer,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: <DrawerButton navigation={navigation} />
+      })
+    },
     SplashScreen: { screen: SplashScreen }
   },
   {

@@ -91,22 +91,22 @@ class DriverHomeScreen extends React.Component {
       this.setState({
         errorMessage: "Permission to access location was denied"
       });
+    } else {
+      let location = await Location.getCurrentPositionAsync({});
+
+      await AsyncStorage.setItem(
+        "latitude",
+        JSON.stringify(location.coords.latitude)
+      );
+      await AsyncStorage.setItem(
+        "longitude",
+        JSON.stringify(location.coords.longitude)
+      );
+      this.setState({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude
+      });
     }
-
-    let location = await Location.getCurrentPositionAsync({});
-
-    await AsyncStorage.setItem(
-      "latitude",
-      JSON.stringify(location.coords.latitude)
-    );
-    await AsyncStorage.setItem(
-      "longitude",
-      JSON.stringify(location.coords.longitude)
-    );
-    this.setState({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude
-    });
   };
 
   render() {
