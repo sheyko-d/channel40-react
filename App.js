@@ -101,7 +101,7 @@ class LoadingScreen extends React.Component {
     this.setState({ fontLoaded: true });
 
     this.timer = setTimeout(() => {
-      this.resetNavigation(/*"SplashScreen"*/ /*"MainTabs"*/ "FingerprintScreen");
+      this.resetNavigation(/*"SplashScreen"*/ /*"MainTabs"*/ /*"FingerprintScreen"*/"MainDrawer");
     }, 2000);
   }
 

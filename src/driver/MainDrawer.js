@@ -109,7 +109,8 @@ MainDrawer.navigationOptions = {
     fontFamily: "Graystroke-Regular",
     fontWeight: "200",
     fontSize: 16,
-    paddingRight: 40
+    paddingRight: Platform.OS === "ios" ? 0 : 40,
+    paddingTop: Platform.OS === "ios" ? 8 : 0
   }
 };
 

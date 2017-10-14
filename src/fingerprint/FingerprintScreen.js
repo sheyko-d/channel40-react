@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     fontFamily: "Akkurat-Normal",
     color: "#333",
     lineHeight: 25,
-    marginTop: -8
+    marginTop: Platform.OS === "ios" ? 0 : -8
   },
   divider: {
     backgroundColor: "#e0e0e0",
@@ -142,7 +142,8 @@ class FingerprintScreen extends React.Component {
       color: "#333",
       fontFamily: "Graystroke-Regular",
       fontWeight: "200",
-      fontSize: 16
+      fontSize: 16,
+      paddingTop: Platform.OS === "ios" ? 8 : 0
     }
   };
   state = {
@@ -267,7 +268,6 @@ class FingerprintScreen extends React.Component {
         if (result.success) {
           this.authenticationSuccess();
         } else {
-          console.log(JSON.stringify(result));
           this.authenticationFail(result.message);
           if (
             result.error == "authentication_failed" ||
@@ -281,12 +281,12 @@ class FingerprintScreen extends React.Component {
       }
     } else if (Platform.OS === "ios") {
       let result = await Expo.Fingerprint.authenticateAsync(
-        "Show me your finger!"
+        "Hold your finger on the home screen until the percentage reaches 100%."
       );
       if (result.success) {
-        alert("Success!");
+        this.authenticationSuccess();
       } else {
-        alert("Cancel!");
+        this.authenticationFail(result.message);
       }
     }
   }

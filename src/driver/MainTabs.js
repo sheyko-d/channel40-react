@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, Button, ScrollView, Text, Image } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  Button,
+  ScrollView,
+  Text,
+  Image
+} from "react-native";
 import { StackNavigator, TabNavigator } from "react-navigation";
 import DriverHomeScreen from "./DriverHomeScreen";
 
@@ -25,22 +32,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#ccc",
     width: "100%"
   },
-  bottom_tabs: {
-    flexDirection: "row",
-    width: "100%",
-    height: 80
-  },
-  tab_column: {
-    flex: 1,
-    height: 80,
-    alignItems: "center",
-    justifyContent: "center"
-  },
   tab_icon: {
     alignSelf: "center",
     width: 28,
     height: 28,
-    marginTop: 8,
+    marginTop: Platform.OS === "ios" ? 0 : 8,
     resizeMode: "contain",
     tintColor: "#f26522"
   },
@@ -162,7 +158,9 @@ const MainTabs = TabNavigator(
         height: 37
       },
       style: {
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        height: 70,
+        paddingBottom: 8
       },
       indicatorStyle: { backgroundColor: "#f26522" }
     }

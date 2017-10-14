@@ -119,20 +119,20 @@ class DriverHomeScreen extends React.Component {
       latitude = this.state.latitude;
       longitude = this.state.longitude;
     }
-
+/*<MapView
+  style={styles.map}
+  showsUserLocation={true}
+  region={{
+    latitude: latitude,
+    longitude: longitude,
+    latitudeDelta: 0.0422,
+    longitudeDelta: 0.0021
+  }}
+/>*/ 
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="#b3430e" />
-        <MapView
-          style={styles.map}
-          showsUserLocation={true}
-          region={{
-            latitude: latitude,
-            longitude: longitude,
-            latitudeDelta: 0.0422,
-            longitudeDelta: 0.0021
-          }}
-        />
+
       </View>
     );
   }
