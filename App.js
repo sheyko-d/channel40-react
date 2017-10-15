@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
-    flexDirection: "column"
+    flexDirection: "column",
+    backgroundColor: "rgba(0,0,0,0)"
   },
   logo_background: {
     width: "100%",
@@ -102,7 +103,7 @@ class LoadingScreen extends React.Component {
 
     this.timer = setTimeout(() => {
       this.resetNavigation(
-        /*"SplashScreen"*/ /*"MainTabs"*/ /*"FingerprintScreen"*/ "MainDrawer"
+        /*"SplashScreen"*/ /*"MainTabs"*/ "FingerprintScreen" /* "MainDrawer"*/
       );
     }, 2000);
   }

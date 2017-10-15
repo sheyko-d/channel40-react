@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
   fingerprint_percentage_sign: {
     fontSize: 35,
-    marginBottom: 8,
+    marginBottom: Platform.OS === "ios" ? 16 : 8,
     alignSelf: "flex-end",
     marginLeft: 3,
     fontFamily: "AvenirLTStd-Black"
@@ -82,13 +82,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "AvenirLTStd-Heavy",
     color: "#7dda06",
-    marginLeft: 12
+    marginLeft: 12,
+    marginTop: Platform.OS === "ios" ? 4 : 0
   },
   fingerprint_alert: {
     fontSize: 14,
     fontFamily: "AvenirLTStd-Heavy",
     color: "#f26522",
-    marginLeft: 12
+    marginLeft: 12,
+    marginTop: Platform.OS === "ios" ? 4 : 0
+  },
+  fingerprint_try_again: {
+    color: "#f26522",
+    fontFamily: "AvenirLTStd-Heavy",
+    fontSize: 16,
+    alignSelf: "center"
   },
   fingerprint_alert_wrapper: {
     flex: 1,
@@ -189,6 +197,14 @@ class FingerprintScreen extends React.Component {
         </View>
       );
     }
+    let retry_button = null;
+    if (this.state.failed && Platform.OS === "ios") {
+      retry_button = (
+        <Text onPress={this.authenticate} style={styles.fingerprint_try_again}>
+          Try again
+        </Text>
+      );
+    }
 
     return (
       <View style={styles.container}>
@@ -197,7 +213,12 @@ class FingerprintScreen extends React.Component {
           <Text style={styles.fingerprint_title}>
             Use your fingerprint or a backup 4 digit pin to access the app.
           </Text>
-          <View style={[styles.divider, { marginTop: 16 }]} />
+          <View
+            style={[
+              styles.divider,
+              { marginTop: Platform.OS === "ios" ? 48 : 16 }
+            ]}
+          />
           <Image
             style={styles.fingerprint_icon}
             source={require("../../assets/icons/fingerprint.png")}
@@ -208,10 +229,13 @@ class FingerprintScreen extends React.Component {
             </Text>
             <Text style={styles.fingerprint_percentage_sign}>%</Text>
           </View>
-          <Text style={styles.fingerprint_desc}>
-            Hold your finger on the home screen until the percentage reaches
-            100%.
-          </Text>
+          {Platform.OS === "android" ? (
+            <Text style={styles.fingerprint_desc}>
+              Hold your finger on the fingerprint scanner until the percentage
+              reaches 100%.
+            </Text>
+          ) : null}
+          {retry_button}
           <View style={{ flex: 1 }}>{alert}</View>
         </View>
         <View style={styles.divider} />
@@ -229,7 +253,7 @@ class FingerprintScreen extends React.Component {
 
   authenticationSuccess() {
     // Show the success alert
-    this.setState({ success: true });
+    this.setState({ success: true, failed: false });
 
     // Animate the percentage text
     Animated.timing(this.state.percentage, {
@@ -256,37 +280,36 @@ class FingerprintScreen extends React.Component {
   authenticationFail(message) {
     this.setState({
       failed: true,
+      success: false,
       failed_message: message
     });
   }
 
   async authenticate() {
+    let result;
     if (Platform.OS === "android") {
-      this.setState({ waiting: true });
+      self.setState({ waiting: true });
       try {
-        let result = await Expo.Fingerprint.authenticateAsync();
-        if (result.success) {
-          this.authenticationSuccess();
-        } else {
-          this.authenticationFail(result.message);
-          if (
-            result.error == "authentication_failed" ||
-            result.error == "user_cancel"
-          ) {
-            this.authenticate();
-          }
-        }
+        result = await Expo.Fingerprint.authenticateAsync();
       } finally {
-        this.setState({ waiting: false });
+        self.setState({ waiting: false });
       }
     } else if (Platform.OS === "ios") {
-      let result = await Expo.Fingerprint.authenticateAsync(
-        "Hold your finger on the home screen until the percentage reaches 100%."
+      result = await Expo.Fingerprint.authenticateAsync(
+        "Hold your finger on the home button until the percentage reaches 100%."
       );
-      if (result.success) {
-        this.authenticationSuccess();
-      } else {
-        this.authenticationFail(result.message);
+    }
+    if (result.success) {
+      self.authenticationSuccess();
+    } else {
+      self.authenticationFail(result.message);
+      if (Platform.OS === "android") {
+        if (
+          result.error == "authentication_failed" ||
+          result.error == "user_cancel"
+        ) {
+          self.authenticate();
+        }
       }
     }
   }
