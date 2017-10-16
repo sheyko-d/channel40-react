@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
   fingerprint_percentage_sign: {
     fontSize: 35,
-    marginBottom: Platform.OS === "ios" ? 16 : 8,
+    marginBottom: Platform.OS === "ios" ? 16 : 10,
     alignSelf: "flex-end",
     marginLeft: 3,
     fontFamily: "AvenirLTStd-Black"
@@ -302,11 +302,12 @@ class FingerprintScreen extends React.Component {
     if (result.success) {
       self.authenticationSuccess();
     } else {
-      self.authenticationFail(result.message);
+      self.authenticationFail(result);
       if (Platform.OS === "android") {
         if (
           result.error == "authentication_failed" ||
-          result.error == "user_cancel"
+          result.error == "user_cancel" ||
+          result.error == "too_fast"
         ) {
           self.authenticate();
         }
