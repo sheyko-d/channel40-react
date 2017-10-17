@@ -18,6 +18,7 @@ import SplashScreen from "./src/login/SplashScreen";
 import SignInScreen from "./src/login/SignInScreen";
 import SignUpScreen from "./src/login/SignUpScreen";
 import FingerprintScreen from "./src/fingerprint/FingerprintScreen";
+import PinScreen from "./src/fingerprint/PinScreen";
 import { Font } from "expo";
 
 const styles = StyleSheet.create({
@@ -103,7 +104,7 @@ class LoadingScreen extends React.Component {
 
     this.timer = setTimeout(() => {
       this.resetNavigation(
-        /*"SplashScreen"*/ /*"MainTabs"*/ "FingerprintScreen" /* "MainDrawer"*/
+        /*"SplashScreen"*/ /*"MainTabs"*/ "PinScreen" /* "MainDrawer"*/
       );
     }, 2000);
   }
@@ -148,6 +149,7 @@ const SimpleApp = StackNavigator(
     SignUpScreen: { screen: SignUpScreen },
     MainTabs: { screen: MainTabs },
     FingerprintScreen: { screen: FingerprintScreen },
+    PinScreen: { screen: PinScreen },
     MainDrawer: {
       screen: MainDrawer,
       navigationOptions: ({ navigation }) => ({

@@ -241,11 +241,24 @@ class FingerprintScreen extends React.Component {
         <View style={styles.divider} />
         <Text style={styles.bottom_text}>
           Doesn't work?&nbsp;
-          <Text style={{ textDecorationLine: "underline" }}>Enter pin</Text>
+          <Text
+            style={{ textDecorationLine: "underline" }}
+            onPress={() => this.resetNavigation("PinScreen")}
+          >
+            Enter pin
+          </Text>
         </Text>
       </View>
     );
   }
+
+  resetNavigation = targetRoute => {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: targetRoute })]
+    });
+    self.props.navigation.dispatch(resetAction);
+  };
 
   componentDidMount() {
     this.authenticate();
@@ -302,14 +315,14 @@ class FingerprintScreen extends React.Component {
     if (result.success) {
       self.authenticationSuccess();
     } else {
-      self.authenticationFail(result);
+      self.authenticationFail(result.message);
       if (Platform.OS === "android") {
         if (
           result.error == "authentication_failed" ||
           result.error == "user_cancel" ||
           result.error == "too_fast"
         ) {
-          self.authenticate();
+          //self.authenticate();
         }
       }
     }
