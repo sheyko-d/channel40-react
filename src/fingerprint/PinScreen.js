@@ -8,7 +8,8 @@ import {
   StatusBar,
   Image,
   Animated,
-  TextInput
+  TextInput,
+  Keyboard
 } from "react-native";
 import { NavigationActions } from "react-navigation";
 
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
     fontFamily: "Graystroke-Regular",
     fontWeight: "200",
     color: "#333",
-    marginTop: 80,
+    marginTop: 36,
     alignSelf: "center"
   },
   divider: {
@@ -153,7 +154,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     textAlign: "center",
     marginLeft: 6,
-    marginRight: 6
+    marginRight: 6,
+    fontSize: 30
   }
 });
 
@@ -232,6 +234,11 @@ class PinScreen extends React.Component {
           ) : null}
           <View style={styles.pin_field_wrapper}>
             <TextInput
+              ref="0"
+              keyboardType="numeric"
+              autoFocus={true}
+              secureTextEntry={true}
+              maxLength={1}
               style={[
                 styles.pin_field,
                 {
@@ -242,8 +249,13 @@ class PinScreen extends React.Component {
               underlineColorAndroid="rgba(0,0,0,0)"
               selectionColor={"white"}
               onFocus={() => this.onFocus(0)}
+              onChangeText={() => this.onChangeText(0)}
             />
             <TextInput
+              ref="1"
+              keyboardType="numeric"
+              secureTextEntry={true}
+              maxLength={1}
               style={[
                 styles.pin_field,
                 {
@@ -254,8 +266,13 @@ class PinScreen extends React.Component {
               underlineColorAndroid="rgba(0,0,0,0)"
               selectionColor={"white"}
               onFocus={() => this.onFocus(1)}
+              onChangeText={() => this.onChangeText(1)}
             />
             <TextInput
+              ref="2"
+              keyboardType="numeric"
+              secureTextEntry={true}
+              maxLength={1}
               style={[
                 styles.pin_field,
                 {
@@ -266,8 +283,13 @@ class PinScreen extends React.Component {
               underlineColorAndroid="rgba(0,0,0,0)"
               selectionColor={"white"}
               onFocus={() => this.onFocus(2)}
+              onChangeText={() => this.onChangeText(2)}
             />
             <TextInput
+              ref="3"
+              keyboardType="numeric"
+              secureTextEntry={true}
+              maxLength={1}
               style={[
                 styles.pin_field,
                 {
@@ -278,6 +300,7 @@ class PinScreen extends React.Component {
               underlineColorAndroid="rgba(0,0,0,0)"
               selectionColor={"white"}
               onFocus={() => this.onFocus(3)}
+              onChangeText={() => this.onChangeText(3)}
             />
           </View>
 
@@ -297,10 +320,17 @@ class PinScreen extends React.Component {
     this.authenticate();
   }
 
+  onChangeText(fieldNumber) {
+    if (fieldNumber < 3) {
+      this.onFocus(fieldNumber + 1);
+    }
+  }
+
   onFocus(fieldNumber) {
     this.setState({
       fieldNumber: fieldNumber
     });
+    this.refs[fieldNumber].focus();
   }
 
   authenticationSuccess() {
