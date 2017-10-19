@@ -249,7 +249,7 @@ class PinScreen extends React.Component {
               underlineColorAndroid="rgba(0,0,0,0)"
               selectionColor={"white"}
               onFocus={() => this.onFocus(0)}
-              onChangeText={() => this.onChangeText(0)}
+              onChangeText={text => this.onChangeText(text, 0)}
             />
             <TextInput
               ref="1"
@@ -266,7 +266,7 @@ class PinScreen extends React.Component {
               underlineColorAndroid="rgba(0,0,0,0)"
               selectionColor={"white"}
               onFocus={() => this.onFocus(1)}
-              onChangeText={() => this.onChangeText(1)}
+              onChangeText={text => this.onChangeText(text, 1)}
             />
             <TextInput
               ref="2"
@@ -283,7 +283,7 @@ class PinScreen extends React.Component {
               underlineColorAndroid="rgba(0,0,0,0)"
               selectionColor={"white"}
               onFocus={() => this.onFocus(2)}
-              onChangeText={() => this.onChangeText(2)}
+              onChangeText={text => this.onChangeText(text, 2)}
             />
             <TextInput
               ref="3"
@@ -300,7 +300,7 @@ class PinScreen extends React.Component {
               underlineColorAndroid="rgba(0,0,0,0)"
               selectionColor={"white"}
               onFocus={() => this.onFocus(3)}
-              onChangeText={() => this.onChangeText(3)}
+              onChangeText={text => this.onChangeText(text, 3)}
             />
           </View>
 
@@ -320,11 +320,23 @@ class PinScreen extends React.Component {
     this.authenticate();
   }
 
-  onChangeText(fieldNumber) {
+  onChangeText(text, fieldNumber) {
     if (fieldNumber < 3) {
-      this.onFocus(fieldNumber + 1);
+      if (text.length > 0) {
+        this.onFocus(fieldNumber + 1);
+      }
+    } else {
+      this.resetNavigation("MainDrawer");
     }
   }
+
+  resetNavigation = targetRoute => {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: targetRoute })]
+    });
+    self.props.navigation.dispatch(resetAction);
+  };
 
   onFocus(fieldNumber) {
     this.setState({

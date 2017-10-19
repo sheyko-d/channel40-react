@@ -102,10 +102,18 @@ class LoadingScreen extends React.Component {
 
     this.setState({ fontLoaded: true });
 
+    // Check if device have a fingerprint scanner
+    // and if some fingerprints are enrolled
+    let hasHardwareAsync = await Expo.Fingerprint.hasHardwareAsync();
+    let isEnrolledAsync = await Expo.Fingerprint.isEnrolledAsync();
     this.timer = setTimeout(() => {
-      this.resetNavigation(
-        /*"SplashScreen"*/ /*"MainTabs"*/ "PinScreen" /* "MainDrawer"*/
-      );
+      if (hasHardwareAsync && isEnrolledAsync) {
+        this.resetNavigation(
+          /*"SplashScreen"*/ /*"MainTabs"*/ "FingerprintScreen" /* "MainDrawer"*/
+        );
+      } else {
+        this.resetNavigation("PinScreen");
+      }
     }, 2000);
   }
 
