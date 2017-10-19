@@ -159,7 +159,7 @@ const MainTabs = TabNavigator(
       },
       style: {
         backgroundColor: "#fff",
-        height: 70,
+        height: Platform.OS === "ios" ? 70 : 80,
         paddingBottom: 8
       },
       indicatorStyle: { backgroundColor: "#f26522" }
