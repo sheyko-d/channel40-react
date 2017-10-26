@@ -1,4 +1,5 @@
 import React from "react";
+import Touchable from "react-native-touchable-safe";
 import {
   AppRegistry,
   StyleSheet,
@@ -79,11 +80,12 @@ const styles = StyleSheet.create({
     width: StyleSheet.hairlineWidth,
     backgroundColor: "#999999"
   },
-  top_bar_button: {
+  top_bar_wrapper: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    flexDirection: "row"
+    flexDirection: "row",
+    height: "100%"
   },
   top_bar_nearby: {
     width: 11,
@@ -171,23 +173,41 @@ class DriverHomeScreen extends React.Component {
         <View style={styles.top_bar}>
           <Text style={[styles.top_bar_text, { flex: 0.7 }]}>LOADS:</Text>
           <View style={styles.top_bar_divider} />
-          <View style={styles.top_bar_button}>
-            <Image
-              style={styles.top_bar_nearby}
-              source={require("../../assets/icons/nearby_icon.png")}
-            />
-            <Text style={styles.top_bar_text}>NEARBY</Text>
-          </View>
+          <Touchable
+            outerStyle={styles.top_bar_wrapper}
+            onPress={() => this.openNearbyScreen()}
+            nativePressColor="rgba(255,255,255,.3)"
+          >
+            <View style={styles.top_bar_wrapper}>
+              <Image
+                style={styles.top_bar_nearby}
+                source={require("../../assets/icons/nearby_icon.png")}
+              />
+              <Text style={styles.top_bar_text}>NEARBY</Text>
+            </View>
+          </Touchable>
           <View style={styles.top_bar_divider} />
-          <View style={styles.top_bar_button}>
-            <View style={styles.top_bar_express} />
-            <Text style={styles.top_bar_text}>EXPRESS</Text>
-          </View>
+          <Touchable
+            outerStyle={styles.top_bar_wrapper}
+            onPress={() => this.openExpressScreen()}
+            nativePressColor="rgba(255,255,255,.3)"
+          >
+            <View style={styles.top_bar_wrapper}>
+              <View style={styles.top_bar_express} />
+              <Text style={styles.top_bar_text}>EXPRESS</Text>
+            </View>
+          </Touchable>
           <View style={styles.top_bar_divider} />
-          <View style={styles.top_bar_button}>
-            <View style={styles.top_bar_general} />
-            <Text style={styles.top_bar_text}>GENERAL</Text>
-          </View>
+          <Touchable
+            outerStyle={styles.top_bar_wrapper}
+            onPress={() => this.openGeneralScreen()}
+            nativePressColor="rgba(255,255,255,.3)"
+          >
+            <View style={styles.top_bar_wrapper}>
+              <View style={styles.top_bar_general} />
+              <Text style={styles.top_bar_text}>GENERAL</Text>
+            </View>
+          </Touchable>
         </View>
         <MapView
           style={styles.map}
@@ -202,6 +222,12 @@ class DriverHomeScreen extends React.Component {
       </View>
     );
   }
+
+  openNearbyScreen() {}
+
+  openExpressScreen() {}
+
+  openGeneralScreen() {}
 }
 
 export default DriverHomeScreen;
