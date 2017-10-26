@@ -59,6 +59,51 @@ const styles = StyleSheet.create({
     fontSize: 9,
     color: "#f26522",
     fontWeight: "bold"
+  },
+  top_bar: {
+    backgroundColor: "#252525",
+    height: 32,
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  top_bar_text: {
+    color: "#fff",
+    fontFamily: "Graystroke-Regular",
+    fontSize: 12,
+    textAlign: "center"
+  },
+  top_bar_divider: {
+    height: "100%",
+    width: StyleSheet.hairlineWidth,
+    backgroundColor: "#999999"
+  },
+  top_bar_button: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row"
+  },
+  top_bar_nearby: {
+    width: 11,
+    height: 11,
+    marginRight: 8
+  },
+  top_bar_general: {
+    width: 10,
+    height: 10,
+    marginRight: 8,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    marginTop: 1
+  },
+  top_bar_express: {
+    width: 10,
+    height: 10,
+    marginRight: 8,
+    backgroundColor: "#f26522",
+    borderRadius: 5,
+    marginTop: 1
   }
 });
 
@@ -119,19 +164,40 @@ class DriverHomeScreen extends React.Component {
       latitude = this.state.latitude;
       longitude = this.state.longitude;
     }
-    <MapView
-      style={styles.map}
-      showsUserLocation={true}
-      region={{
-        latitude: latitude,
-        longitude: longitude,
-        latitudeDelta: 0.0422,
-        longitudeDelta: 0.0021
-      }}
-    />;
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="#b3430e" />
+        <View style={styles.top_bar}>
+          <Text style={[styles.top_bar_text, { flex: 0.7 }]}>LOADS:</Text>
+          <View style={styles.top_bar_divider} />
+          <View style={styles.top_bar_button}>
+            <Image
+              style={styles.top_bar_nearby}
+              source={require("../../assets/icons/nearby_icon.png")}
+            />
+            <Text style={styles.top_bar_text}>NEARBY</Text>
+          </View>
+          <View style={styles.top_bar_divider} />
+          <View style={styles.top_bar_button}>
+            <View style={styles.top_bar_express} />
+            <Text style={styles.top_bar_text}>EXPRESS</Text>
+          </View>
+          <View style={styles.top_bar_divider} />
+          <View style={styles.top_bar_button}>
+            <View style={styles.top_bar_general} />
+            <Text style={styles.top_bar_text}>GENERAL</Text>
+          </View>
+        </View>
+        <MapView
+          style={styles.map}
+          showsUserLocation={true}
+          region={{
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: 0.0422,
+            longitudeDelta: 0.0021
+          }}
+        />
       </View>
     );
   }

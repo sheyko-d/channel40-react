@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Component,
   Platform,
   StyleSheet,
   Button,
@@ -9,6 +10,7 @@ import {
 } from "react-native";
 import { StackNavigator, TabNavigator } from "react-navigation";
 import DriverHomeScreen from "./DriverHomeScreen";
+import MyJobsScreen from "./home/MyJobsScreen";
 
 const styles = StyleSheet.create({
   container: {
@@ -61,10 +63,6 @@ const MessagesScreen = ({ navigation }) => (
   <MyNavScreen banner="Messages Screen" navigation={navigation} />
 );
 
-const MyJobsScreen = ({ navigation }) => (
-  <MyNavScreen banner="My Jobs Screen" navigation={navigation} />
-);
-
 const PaymentsScreen = ({ navigation }) => (
   <MyNavScreen banner="Payments Screen" navigation={navigation} />
 );
@@ -73,7 +71,7 @@ const ProfileScreen = ({ navigation }) => (
   <MyNavScreen banner="Profile Screen" navigation={navigation} />
 );
 
-const MainTabs = TabNavigator(
+const MainTabsNavigator = TabNavigator(
   {
     MainTab: {
       screen: HomeScreen,
@@ -91,7 +89,7 @@ const MainTabs = TabNavigator(
     },
     MessagesTab: {
       screen: MessagesScreen,
-      path: "/profile",
+      path: "/messages",
       navigationOptions: {
         title: "Messages",
         tabBarIcon: ({ tintColor }) => (
@@ -167,14 +165,22 @@ const MainTabs = TabNavigator(
   }
 );
 
-MainTabs.navigationOptions = {
-  drawerLabel: "Home",
-  drawerIcon: ({ tintColor }) => (
-    <Image
-      style={styles.tab_icon}
-      source={require("../../assets/icons/ic_home.png")}
-    />
-  )
-};
+
+class MainTabs extends React.Component {
+  render(){
+    return(
+        <MainTabsNavigator/>
+    );
+  }
+
+  componentDidMount(){
+    this.props.navigation.navigate("MessagesTab");
+    console.log(JSON.stringify(this.props.navigation));
+    if (typeof this.props.pos != "undefined"){
+      this.props.navigation.navigate("MessagesTab");
+      console.log("messages screen");
+    }
+  }
+}
 
 export default MainTabs;

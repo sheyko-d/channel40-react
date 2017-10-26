@@ -6,10 +6,26 @@ import {
   StyleSheet,
   Text,
   Image,
-  MenuButton
+  MenuButton,
+  View
 } from "react-native";
-import { DrawerNavigator } from "react-navigation";
+import {
+  DrawerNavigator,
+  DrawerItems,
+  NavigationActions
+} from "react-navigation";
 import MainTabs from "./MainTabs";
+import MainJobsScreen from "./home/MyJobsScreen";
+
+MainTabs.navigationOptions = {
+  drawerLabel: "HOME",
+  drawerIcon: ({ tintColor }) => (
+    <Image
+      style={styles.tab_icon}
+      source={require("../../assets/icons/ic_home.png")}
+    />
+  )
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -43,8 +59,8 @@ const styles = StyleSheet.create({
   },
   tab_icon: {
     alignSelf: "center",
-    width: 28,
-    height: 28,
+    width: 22,
+    height: 22,
     resizeMode: "contain",
     tintColor: "#f26522"
   },
@@ -52,6 +68,15 @@ const styles = StyleSheet.create({
     fontSize: 9,
     color: "#f26522",
     fontWeight: "bold"
+  },
+  drawer_item: {
+    padding: 16
+  },
+  drawer_label: {
+    fontFamily: "Graystroke-Regular",
+    fontSize: 14,
+    color: "#363636",
+    marginLeft: -8
   }
 });
 
@@ -66,18 +91,46 @@ const MyNavScreen = ({ navigation, banner }) => (
   </ScrollView>
 );
 
-const DraftsScreen = ({ navigation }) => (
-  <MyNavScreen banner={"Drafts Screen"} navigation={navigation} />
+const GeneralLoadsScreen = ({ navigation }) => (
+  <MyNavScreen banner={"General Loads Screen"} navigation={navigation} />
 );
-DraftsScreen.navigationOptions = {
-  drawerLabel: "Drafts",
+
+GeneralLoadsScreen.navigationOptions = {
+  drawerLabel: "GENERAL LOADS",
   drawerIcon: ({ tintColor }) => (
     <Image
       style={styles.tab_icon}
-      source={require("../../assets/icons/ic_profile.png")}
+      source={require("../../assets/icons/ic_check_circle.png")}
     />
   )
 };
+
+const ExpressLoadsScreen = ({ navigation }) => (
+  <MyNavScreen banner={"General Loads Screen"} navigation={navigation} />
+);
+
+ExpressLoadsScreen.navigationOptions = {
+  drawerLabel: "EXPRESS LOADS",
+  drawerIcon: ({ tintColor }) => (
+    <Image
+      style={styles.tab_icon}
+      source={require("../../assets/icons/ic_bullseye.png")}
+    />
+  )
+};
+
+const CustomDrawerContentComponent = props => (
+  <View>
+    <DrawerItems
+      {...props}
+      getLabel={scene => (
+        <View style={styles.drawer_item}>
+          <Text style={styles.drawer_label}>{props.getLabel(scene)}</Text>
+        </View>
+      )}
+    />
+  </View>
+);
 
 const MainDrawer = DrawerNavigator(
   {
@@ -85,16 +138,21 @@ const MainDrawer = DrawerNavigator(
       path: "/",
       screen: MainTabs
     },
-    Drafts: {
+    GeneralLoads: {
       path: "/sent",
-      screen: DraftsScreen
+      screen: GeneralLoadsScreen
+    },
+    ExpressLoads: {
+      path: "/sent",
+      screen: ExpressLoadsScreen
     }
   },
   {
     initialRouteName: "Home",
     contentOptions: {
-      activeTintColor: "#e91e63"
-    }
+      activeTintColor: "#000000"
+    },
+    contentComponent: CustomDrawerContentComponent
   }
 );
 
