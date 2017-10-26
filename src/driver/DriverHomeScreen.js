@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
     height: 32,
     width: "100%",
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    elevation: 4
   },
   top_bar_text: {
     color: "#fff",

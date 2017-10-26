@@ -31,32 +31,6 @@ const styles = StyleSheet.create({
   container: {
     marginTop: Platform.OS === "ios" ? 20 : 0
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
-  },
-  map: {
-    flex: 1,
-    backgroundColor: "#ccc",
-    width: "100%"
-  },
-  bottom_tabs: {
-    flexDirection: "row",
-    width: "100%",
-    height: 80
-  },
-  tab_column: {
-    flex: 1,
-    height: 80,
-    alignItems: "center",
-    justifyContent: "center"
-  },
   tab_icon: {
     alignSelf: "center",
     width: 22,
