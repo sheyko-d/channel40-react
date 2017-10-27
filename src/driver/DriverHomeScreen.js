@@ -12,7 +12,7 @@ import {
   Platform,
   AsyncStorage
 } from "react-native";
-import { MapView, Location, Constants, Permissions } from "expo";
+import { MapView, Location, Constants, Permissions, LinearGradient } from "expo";
 import { StackNavigator, TabNavigator } from "react-navigation";
 
 const styles = StyleSheet.create({
@@ -217,6 +217,16 @@ class DriverHomeScreen extends React.Component {
             longitude: longitude,
             latitudeDelta: 3.5,
             longitudeDelta: 0
+          }}
+        />
+        <LinearGradient
+          colors={["transparent", "rgba(0,0,0,0.1)"]}
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: 6
           }}
         />
       </View>
