@@ -11,6 +11,7 @@ import {
 import { StackNavigator, TabNavigator } from "react-navigation";
 import DriverHomeScreen from "./DriverHomeScreen";
 import MyJobsScreen from "./home/MyJobsScreen";
+import MessagesScreen from "../messages/MessagesScreen";
 
 const styles = StyleSheet.create({
   container: {
@@ -57,10 +58,6 @@ const MyNavScreen = ({ navigation, banner }) => (
 
 const HomeScreen = ({ navigation }) => (
   <DriverHomeScreen banner="Home Screen" navigation={navigation} />
-);
-
-const MessagesScreen = ({ navigation }) => (
-  <MyNavScreen banner="Messages Screen" navigation={navigation} />
 );
 
 const PaymentsScreen = ({ navigation }) => (
