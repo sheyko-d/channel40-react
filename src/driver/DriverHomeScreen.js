@@ -117,7 +117,7 @@ class DriverHomeScreen extends React.Component {
     errorMessage: null
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.updateLocation();
   }
 
@@ -167,7 +167,6 @@ class DriverHomeScreen extends React.Component {
       latitude = this.state.latitude;
       longitude = this.state.longitude;
     }
-    // (The current location button fix is in the node_modules folder.)
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="#b3430e" />
@@ -216,8 +215,8 @@ class DriverHomeScreen extends React.Component {
           region={{
             latitude: latitude,
             longitude: longitude,
-            latitudeDelta: 0.0422,
-            longitudeDelta: 0.0021
+            latitudeDelta: 3.5,
+            longitudeDelta: 0
           }}
         />
       </View>
