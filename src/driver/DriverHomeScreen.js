@@ -167,6 +167,7 @@ class DriverHomeScreen extends React.Component {
       latitude = this.state.latitude;
       longitude = this.state.longitude;
     }
+    // (The current location button fix is in the node_modules folder.)
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="#b3430e" />
