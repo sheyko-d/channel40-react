@@ -12,6 +12,8 @@ import { StackNavigator, TabNavigator } from "react-navigation";
 import DriverHomeScreen from "./DriverHomeScreen";
 import MyJobsScreen from "./home/MyJobsScreen";
 import MessagesScreen from "../messages/MessagesScreen";
+import PaymentsScreen from "./home/payments/PaymentsScreen";
+import ProfileScreen from "./home/profile/ProfileScreen";
 
 const styles = StyleSheet.create({
   container: {
@@ -50,22 +52,8 @@ const styles = StyleSheet.create({
   }
 });
 
-const MyNavScreen = ({ navigation, banner }) => (
-  <ScrollView>
-    <Text style={{ margin: 14 }}>{banner}</Text>
-  </ScrollView>
-);
-
 const HomeScreen = ({ navigation }) => (
   <DriverHomeScreen banner="Home Screen" navigation={navigation} />
-);
-
-const PaymentsScreen = ({ navigation }) => (
-  <MyNavScreen banner="Payments Screen" navigation={navigation} />
-);
-
-const ProfileScreen = ({ navigation }) => (
-  <MyNavScreen banner="Profile Screen" navigation={navigation} />
 );
 
 const MainTabsNavigator = TabNavigator(

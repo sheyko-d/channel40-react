@@ -20,16 +20,16 @@ const styles = StyleSheet.create({
   }
 });
 
-class MessagesScreen extends React.Component {
+class PaymentsScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.placeholder_wrapper}>
-          <Text style={styles.placeholder}>THERE ARE NO{"\n"}CHATS YET.</Text>
+          <Text style={styles.placeholder}>NO COMPLETED{"\n"}LOADS FOUND.</Text>
         </View>
       </View>
     );
   }
 }
 
-export default MessagesScreen;
+export default PaymentsScreen;

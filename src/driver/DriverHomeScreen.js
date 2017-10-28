@@ -6,13 +6,18 @@ import {
   Text,
   Button,
   View,
-  TouchableHighlight,
   Image,
   StatusBar,
   Platform,
   AsyncStorage
 } from "react-native";
-import { MapView, Location, Constants, Permissions, LinearGradient } from "expo";
+import {
+  MapView,
+  Location,
+  Constants,
+  Permissions,
+  LinearGradient
+} from "expo";
 import { StackNavigator, TabNavigator } from "react-navigation";
 
 const styles = StyleSheet.create({
@@ -34,7 +39,7 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
-    backgroundColor: "#ccc",
+    backgroundColor: "#f7f3ef",
     width: "100%"
   },
   bottom_tabs: {
@@ -107,6 +112,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#f26522",
     borderRadius: 5,
     marginTop: 1
+  },
+  gradient: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 6
   }
 });
 
@@ -221,13 +233,7 @@ class DriverHomeScreen extends React.Component {
         />
         <LinearGradient
           colors={["transparent", "rgba(0,0,0,0.1)"]}
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: 6
-          }}
+          style={styles.gradient}
         />
       </View>
     );
