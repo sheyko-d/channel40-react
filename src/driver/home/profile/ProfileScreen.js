@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
   menu: {
     paddingLeft: 27,
     paddingRight: 27,
-    marginTop: 20
+    marginTop: 20,
+    marginBottom: 36
   },
   menu_divider: {
     width: "100%",
@@ -52,7 +53,8 @@ const styles = StyleSheet.create({
     fontFamily: "Graystroke-Regular"
   },
   menu_item: {
-    paddingLeft: 16,
+    paddingLeft: 12,
+    paddingRight: 12,
     height: 48,
     alignItems: "center",
     flexDirection: "row"

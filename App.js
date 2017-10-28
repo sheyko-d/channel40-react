@@ -70,7 +70,7 @@ class LoadingScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <View>
-        <StatusBar barStyle="light-content" backgroundColor="#202933" />
+        <StatusBar translucent backgroundColor="rgba(255, 255, 255, 0)" />
         <Image
           style={styles.logo_background}
           source={require("./assets/icons/loading.jpg")}
