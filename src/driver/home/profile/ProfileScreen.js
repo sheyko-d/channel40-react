@@ -68,6 +68,8 @@ const styles = StyleSheet.create({
 
 class ProfileScreen extends React.Component {
   render() {
+    const { navigate } = this.props.navigation;
+    console.log(JSON.stringify(this.props.navigation));
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -96,53 +98,65 @@ class ProfileScreen extends React.Component {
               </View>
             </Touchable>
             <View style={styles.menu_divider} />
-            <View style={styles.menu_item}>
-              <Text style={styles.menu_text}>DOCUMENTS</Text>
-              <Image
-                style={styles.menu_arrow}
-                source={require("../../../../assets/icons/ic_right_arrow_circle_16dp.png")}
-              />
-            </View>
+            <Touchable>
+              <View style={styles.menu_item}>
+                <Text style={styles.menu_text}>DOCUMENTS</Text>
+                <Image
+                  style={styles.menu_arrow}
+                  source={require("../../../../assets/icons/ic_right_arrow_circle_16dp.png")}
+                />
+              </View>
+            </Touchable>
             <View style={styles.menu_divider} />
-            <View style={styles.menu_item}>
-              <Text style={styles.menu_text}>LOAD TYPES</Text>
-              <Image
-                style={styles.menu_arrow}
-                source={require("../../../../assets/icons/ic_right_arrow_circle_16dp.png")}
-              />
-            </View>
+            <Touchable>
+              <View style={styles.menu_item}>
+                <Text style={styles.menu_text}>LOAD TYPES</Text>
+                <Image
+                  style={styles.menu_arrow}
+                  source={require("../../../../assets/icons/ic_right_arrow_circle_16dp.png")}
+                />
+              </View>
+            </Touchable>
             <View style={styles.menu_divider} />
-            <View style={styles.menu_item}>
-              <Text style={styles.menu_text}>TRUCK SPECIFICATIONS</Text>
-              <Image
-                style={styles.menu_arrow}
-                source={require("../../../../assets/icons/ic_right_arrow_circle_16dp.png")}
-              />
-            </View>
+            <Touchable>
+              <View style={styles.menu_item}>
+                <Text style={styles.menu_text}>TRUCK SPECIFICATIONS</Text>
+                <Image
+                  style={styles.menu_arrow}
+                  source={require("../../../../assets/icons/ic_right_arrow_circle_16dp.png")}
+                />
+              </View>
+            </Touchable>
             <View style={styles.menu_divider} />
-            <View style={styles.menu_item}>
-              <Text style={styles.menu_text}>PASSWORD</Text>
-              <Image
-                style={styles.menu_arrow}
-                source={require("../../../../assets/icons/ic_right_arrow_circle_16dp.png")}
-              />
-            </View>
+            <Touchable>
+              <View style={styles.menu_item}>
+                <Text style={styles.menu_text}>PASSWORD</Text>
+                <Image
+                  style={styles.menu_arrow}
+                  source={require("../../../../assets/icons/ic_right_arrow_circle_16dp.png")}
+                />
+              </View>
+            </Touchable>
             <View style={styles.menu_divider} />
-            <View style={styles.menu_item}>
-              <Text style={styles.menu_text}>PIN CODE</Text>
-              <Image
-                style={styles.menu_arrow}
-                source={require("../../../../assets/icons/ic_right_arrow_circle_16dp.png")}
-              />
-            </View>
+            <Touchable onPress={() => navigate("PinScreen")}>
+              <View style={styles.menu_item}>
+                <Text style={styles.menu_text}>PIN CODE</Text>
+                <Image
+                  style={styles.menu_arrow}
+                  source={require("../../../../assets/icons/ic_right_arrow_circle_16dp.png")}
+                />
+              </View>
+            </Touchable>
             <View style={styles.menu_divider} />
-            <View style={styles.menu_item}>
-              <Text style={styles.menu_text}>ACCOUNT DETAILS</Text>
-              <Image
-                style={styles.menu_arrow}
-                source={require("../../../../assets/icons/ic_right_arrow_circle_16dp.png")}
-              />
-            </View>
+            <Touchable>
+              <View style={styles.menu_item}>
+                <Text style={styles.menu_text}>ACCOUNT DETAILS</Text>
+                <Image
+                  style={styles.menu_arrow}
+                  source={require("../../../../assets/icons/ic_right_arrow_circle_16dp.png")}
+                />
+              </View>
+            </Touchable>
             <View style={styles.menu_divider} />
           </View>
         </ScrollView>

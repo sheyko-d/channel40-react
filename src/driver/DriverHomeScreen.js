@@ -124,13 +124,23 @@ const styles = StyleSheet.create({
 
 class DriverHomeScreen extends React.Component {
   state = {
-    latitude: null,
-    longitude: null,
-    errorMessage: null
+    errorMessage: null,
+    region: {
+      latitude: -24.25,
+      longitude: 133.916667,
+      latitudeDelta: 45,
+      longitudeDelta: 0
+    }
   };
 
   componentDidMount() {
+    console.log("*************************");
     this.updateLocation();
+
+    let that = this;
+    setTimeout(function() {
+      that.forceUpdate();
+    }, 1000);
   }
 
   async updateLocation() {
@@ -139,9 +149,16 @@ class DriverHomeScreen extends React.Component {
     latitude = JSON.parse(latitude);
     longitude = JSON.parse(longitude);
     if (latitude !== null) {
-      this.setState({ latitude: latitude, longitude: longitude });
+      console.log("restore latitude = " + latitude);
+      this.setState({
+        region: {
+          latitude: latitude,
+          longitude: longitude,
+          latitudeDelta: 3.5,
+          longitudeDelta: 0
+        }
+      });
     }
-
     this._getLocationAsync({ enableHighAccuracy: true });
   }
 
@@ -162,9 +179,14 @@ class DriverHomeScreen extends React.Component {
         "longitude",
         JSON.stringify(location.coords.longitude)
       );
+
       this.setState({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude
+        region: {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 3.5,
+          longitudeDelta: 0
+        }
       });
     }
   };
@@ -224,12 +246,7 @@ class DriverHomeScreen extends React.Component {
         <MapView
           style={styles.map}
           showsUserLocation={true}
-          region={{
-            latitude: latitude,
-            longitude: longitude,
-            latitudeDelta: 3.5,
-            longitudeDelta: 0
-          }}
+          region={this.state.region}
         />
         <LinearGradient
           colors={["transparent", "rgba(0,0,0,0.1)"]}
