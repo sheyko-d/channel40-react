@@ -137,7 +137,7 @@ class ProfileScreen extends React.Component {
               </View>
             </Touchable>
             <View style={styles.menu_divider} />
-            <Touchable onPress={() => navigate("PinScreen")}>
+            <Touchable onPress={() => navigate("PinScreen", { change: true })}>
               <View style={styles.menu_item}>
                 <Text style={styles.menu_text}>PIN CODE</Text>
                 <Image

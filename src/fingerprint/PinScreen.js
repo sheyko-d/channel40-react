@@ -14,6 +14,7 @@ import {
   AsyncStorage
 } from "react-native";
 import { NavigationActions } from "react-navigation";
+import TimerMixin from "react-timer-mixin";
 
 var WEBVIEW_REF = "webview";
 var self;
@@ -192,38 +193,16 @@ class PinScreen extends React.Component {
     fieldNumber: 0
   };
   render() {
-    let alert = null;
-    if (this.state.success || this.state.failed) {
-      alert = (
-        <View
-          style={
-            this.state.success
-              ? styles.pin_success_wrapper
-              : styles.pin_alert_wrapper
-          }
-        >
-          <Text
-            style={this.state.success ? styles.pin_success : styles.pin_alert}
-          >
-            {" "}
-            {this.state.success
-              ? "Success, your pin is recognised."
-              : this.state.failed_message == null
-                ? "Error recognizing pin."
-                : this.state.failed_message}
-          </Text>
-        </View>
-      );
-    }
-
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor="white" />
         <View style={styles.content}>
           <Text style={styles.pin_title}>
-            {this.state.pinExists
-              ? "Use your fingerprint or a backup 4 digit pin to access the app."
-              : "Enter a new 4 digit pin for accessing the app."}
+            {this.state.change
+              ? "Change your 4 digit pin for accessing the app."
+              : this.state.pinExists
+                ? "Use your fingerprint or a backup 4 digit pin to access the app."
+                : "Enter a new 4 digit pin for accessing the app."}
           </Text>
           <View
             style={[
@@ -235,9 +214,9 @@ class PinScreen extends React.Component {
           <Text style={styles.pin_subtitle}>YOUR SECRET PIN</Text>
           {Platform.OS === "android" ? (
             <Text style={styles.pin_desc}>
-              {this.state.pinExists
-                ? "Login using your 4 digit pin."
-                : "Enter a new 4 digit pin for accessing the account."}
+              {!this.state.pinExists || this.state.change
+                ? "Enter a new 4 digit pin for accessing the account."
+                : "Login using your 4 digit pin."}
             </Text>
           ) : null}
           <View style={styles.pin_field_wrapper}>
@@ -317,11 +296,19 @@ class PinScreen extends React.Component {
         <View style={styles.divider} />
         <Text style={styles.bottom_text}>
           <Text style={{ textDecorationLine: "underline" }}>
-            {this.state.pinExists ? "Forgot your pin?" : "Disable lock screen"}
+            {this.state.pinExists && !this.state.change
+              ? "Forgot your pin?"
+              : "Disable lock screen"}
           </Text>
         </Text>
       </View>
     );
+  }
+
+  get(obj, key) {
+    return key.split(".").reduce(function(o, x) {
+      return typeof o == "undefined" || o === null ? o : o[x];
+    }, obj);
   }
 
   async retrievePin() {
@@ -331,6 +318,10 @@ class PinScreen extends React.Component {
 
   componentWillMount() {
     this.retrievePin();
+
+    if (this.get(this.props, "navigation.state.params.change")) {
+      this.setState({ change: true });
+    }
 
     BackHandler.addEventListener(
       "hardwareBackPress",
@@ -351,9 +342,17 @@ class PinScreen extends React.Component {
         this.onFocus(fieldNumber + 1);
       }
     } else {
-      this.savePin();
-      this.resetNavigation("MainDrawer");
+      this.authenticationSuccess();
     }
+  }
+
+  authenticationSuccess() {
+    Keyboard.dismiss();
+    this.savePin();
+
+    setTimeout(() => {
+      self.resetNavigation("MainDrawer");
+    }, 100);
   }
 
   resetNavigation = targetRoute => {

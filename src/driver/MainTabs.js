@@ -152,7 +152,7 @@ const MainTabsNavigator = TabNavigator(
 
 class MainTabs extends React.Component {
   render() {
-    return <MainTabsNavigator screenProps={this.props.navigation}/>;
+    return <MainTabsNavigator screenProps={this.props.navigation} />;
   }
 }
 
