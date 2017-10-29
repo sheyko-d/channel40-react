@@ -9,7 +9,8 @@ import {
   Image,
   Animated,
   TextInput,
-  Keyboard
+  Keyboard,
+  BackHandler
 } from "react-native";
 import { NavigationActions } from "react-navigation";
 
@@ -169,7 +170,7 @@ class PinScreen extends React.Component {
     headerStyle: {
       backgroundColor: "white",
       elevation: 0,
-      paddingLeft: 10
+      paddingLeft: 4
     },
     headerTitleStyle: {
       color: "#333",
@@ -338,6 +339,16 @@ class PinScreen extends React.Component {
     self.props.navigation.dispatch(resetAction);
   };
 
+  componentWillMount() {
+    BackHandler.addEventListener(
+      "hardwareBackPress",
+      function() {
+        self.props.navigation.dispatch({ type: "Navigation/BACK" });
+        return true;
+      }.bind(this)
+    );
+  }
+
   onFocus(fieldNumber) {
     this.setState({
       fieldNumber: fieldNumber
@@ -362,14 +373,6 @@ class PinScreen extends React.Component {
       self.resetNavigation("MainDrawer");
     }, 750);
   }
-
-  resetNavigation = targetRoute => {
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName: targetRoute })]
-    });
-    self.props.navigation.dispatch(resetAction);
-  };
 
   authenticationFail(message) {
     this.setState({
