@@ -10,7 +10,8 @@ import {
   Animated,
   TextInput,
   Keyboard,
-  BackHandler
+  BackHandler,
+  AsyncStorage
 } from "react-native";
 import { NavigationActions } from "react-navigation";
 
@@ -177,6 +178,7 @@ class PinScreen extends React.Component {
       fontFamily: "Graystroke-Regular",
       fontWeight: "200",
       fontSize: 16,
+      paddingLeft: 5,
       paddingTop: Platform.OS === "ios" ? 8 : 0
     }
   };
@@ -184,6 +186,7 @@ class PinScreen extends React.Component {
     waiting: false,
     success: false,
     failed: false,
+    pinExists: true,
     failed_message: "",
     percentage: new Animated.Value(0),
     fieldNumber: 0
@@ -218,7 +221,9 @@ class PinScreen extends React.Component {
         <StatusBar barStyle="dark-content" backgroundColor="white" />
         <View style={styles.content}>
           <Text style={styles.pin_title}>
-            Enter a new 4 digit pin for accessing the app.
+            {this.state.pinExists
+              ? "Use your fingerprint or a backup 4 digit pin to access the app."
+              : "Enter a new 4 digit pin for accessing the app."}
           </Text>
           <View
             style={[
@@ -227,10 +232,12 @@ class PinScreen extends React.Component {
             ]}
           />
 
-          <Text style={styles.pin_subtitle}>YOUR BACKUP PIN</Text>
+          <Text style={styles.pin_subtitle}>YOUR SECRET PIN</Text>
           {Platform.OS === "android" ? (
             <Text style={styles.pin_desc}>
-              Enter a new 4 digit pin accessing the account.
+              {this.state.pinExists
+                ? "Login using your 4 digit pin."
+                : "Enter a new 4 digit pin for accessing the account."}
             </Text>
           ) : null}
           <View style={styles.pin_field_wrapper}>
@@ -310,15 +317,32 @@ class PinScreen extends React.Component {
         <View style={styles.divider} />
         <Text style={styles.bottom_text}>
           <Text style={{ textDecorationLine: "underline" }}>
-            Disable lock screen
+            {this.state.pinExists ? "Forgot your pin?" : "Disable lock screen"}
           </Text>
         </Text>
       </View>
     );
   }
 
-  componentDidMount() {
-    this.authenticate();
+  async retrievePin() {
+    let pin = await AsyncStorage.getItem("pin");
+    this.setState({ pinExists: pin !== null });
+  }
+
+  componentWillMount() {
+    this.retrievePin();
+
+    BackHandler.addEventListener(
+      "hardwareBackPress",
+      function() {
+        self.props.navigation.dispatch({ type: "Navigation/BACK" });
+        return true;
+      }.bind(this)
+    );
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress");
   }
 
   onChangeText(text, fieldNumber) {
@@ -327,6 +351,7 @@ class PinScreen extends React.Component {
         this.onFocus(fieldNumber + 1);
       }
     } else {
+      this.savePin();
       this.resetNavigation("MainDrawer");
     }
   }
@@ -339,16 +364,6 @@ class PinScreen extends React.Component {
     self.props.navigation.dispatch(resetAction);
   };
 
-  componentWillMount() {
-    BackHandler.addEventListener(
-      "hardwareBackPress",
-      function() {
-        self.props.navigation.dispatch({ type: "Navigation/BACK" });
-        return true;
-      }.bind(this)
-    );
-  }
-
   onFocus(fieldNumber) {
     this.setState({
       fieldNumber: fieldNumber
@@ -356,47 +371,8 @@ class PinScreen extends React.Component {
     this.refs[fieldNumber].focus();
   }
 
-  authenticationSuccess() {
-    // Show the success alert
-    this.setState({ success: true, failed: false });
-
-    // Animate the percentage text
-    Animated.timing(this.state.percentage, {
-      toValue: 100,
-      duration: 500
-    }).start();
-    this.state.percentage.addListener(({ value }) =>
-      this.setState({ percentage: value })
-    );
-
-    setTimeout(function() {
-      self.resetNavigation("MainDrawer");
-    }, 750);
-  }
-
-  authenticationFail(message) {
-    this.setState({
-      failed: true,
-      success: false,
-      failed_message: message
-    });
-  }
-
-  async authenticate() {
-    if (true) {
-      //self.authenticationSuccess();
-    } else {
-      self.authenticationFail(result.message);
-      if (Platform.OS === "android") {
-        if (
-          result.error == "authentication_failed" ||
-          result.error == "user_cancel" ||
-          result.error == "too_fast"
-        ) {
-          self.authenticate();
-        }
-      }
-    }
+  async savePin() {
+    await AsyncStorage.setItem("pin", "0000");
   }
 }
 

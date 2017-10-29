@@ -110,7 +110,7 @@ class LoadingScreen extends React.Component {
       if (hasHardwareAsync && isEnrolledAsync) {
         this.resetNavigation("FingerprintScreen");
       } else {
-        this.resetNavigation(/*"PinScreen"*/ "MainDrawer");
+        this.resetNavigation("PinScreen" /*"MainDrawer"*/);
       }
     }, 2000);
   }

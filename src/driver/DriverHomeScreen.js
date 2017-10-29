@@ -139,7 +139,7 @@ class DriverHomeScreen extends React.Component {
     let that = this;
     setTimeout(function() {
       that.forceUpdate();
-    }, 250);
+    }, 1000);
   }
 
   async updateLocation() {
