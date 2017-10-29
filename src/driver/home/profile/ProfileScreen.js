@@ -68,8 +68,7 @@ const styles = StyleSheet.create({
 
 class ProfileScreen extends React.Component {
   render() {
-    const { navigate } = this.props.navigation;
-    console.log(JSON.stringify(this.props.navigation));
+    const { navigate } = this.props.screenProps;
     return (
       <View style={styles.container}>
         <ScrollView>

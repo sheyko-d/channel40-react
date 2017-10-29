@@ -110,7 +110,7 @@ const MainDrawer = DrawerNavigator(
   {
     Home: {
       path: "/",
-      screen: MainTabs
+      screen: MainTabs,
     },
     GeneralLoads: {
       path: "/sent",

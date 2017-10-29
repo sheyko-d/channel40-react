@@ -52,14 +52,14 @@ const styles = StyleSheet.create({
   }
 });
 
-const HomeScreen = ({ navigation }) => (
-  <DriverHomeScreen banner="Home Screen" navigation={navigation} />
+const DriverHomeScreenTab = ({ navigation }) => (
+  <DriverHomeScreen navigation={navigation} />
 );
 
 const MainTabsNavigator = TabNavigator(
   {
     MainTab: {
-      screen: HomeScreen,
+      screen: DriverHomeScreenTab,
       path: "/",
       navigationOptions: {
         title: "Welcome",
@@ -150,21 +150,9 @@ const MainTabsNavigator = TabNavigator(
   }
 );
 
-
 class MainTabs extends React.Component {
-  render(){
-    return(
-        <MainTabsNavigator/>
-    );
-  }
-
-  componentDidMount(){
-    this.props.navigation.navigate("MessagesTab");
-    console.log(JSON.stringify(this.props.navigation));
-    if (typeof this.props.pos != "undefined"){
-      this.props.navigation.navigate("MessagesTab");
-      console.log("messages screen");
-    }
+  render() {
+    return <MainTabsNavigator screenProps={this.props.navigation}/>;
   }
 }
 

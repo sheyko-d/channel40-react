@@ -153,7 +153,6 @@ const SimpleApp = StackNavigator(
     SplashScreen: { screen: SplashScreen },
     SignInScreen: { screen: SignInScreen },
     SignUpScreen: { screen: SignUpScreen },
-    MainTabs: { screen: MainTabs },
     FingerprintScreen: { screen: FingerprintScreen },
     PinScreen: { screen: PinScreen },
     MainDrawer: {

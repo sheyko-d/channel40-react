@@ -63,6 +63,7 @@ class SplashScreen extends React.Component {
   constructor(props) {
     super(props);
     self = this;
+      console.log("Correct props should be "+JSON.stringify(props));
   }
   static navigationOptions = {
     title: "Splash",

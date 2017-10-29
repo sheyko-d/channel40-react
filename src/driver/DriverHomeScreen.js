@@ -134,13 +134,12 @@ class DriverHomeScreen extends React.Component {
   };
 
   componentDidMount() {
-    console.log("*************************");
     this.updateLocation();
 
     let that = this;
     setTimeout(function() {
       that.forceUpdate();
-    }, 1000);
+    }, 250);
   }
 
   async updateLocation() {
@@ -149,7 +148,6 @@ class DriverHomeScreen extends React.Component {
     latitude = JSON.parse(latitude);
     longitude = JSON.parse(longitude);
     if (latitude !== null) {
-      console.log("restore latitude = " + latitude);
       this.setState({
         region: {
           latitude: latitude,
