@@ -15,6 +15,7 @@ import {
 } from "react-native";
 import { NavigationActions } from "react-navigation";
 import TimerMixin from "react-timer-mixin";
+import md5 from "react-native-md5";
 
 var WEBVIEW_REF = "webview";
 var self;
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
   pin_field_wrapper: {
     flexDirection: "row",
     alignSelf: "center",
-    marginTop: 48
+    marginTop: 24
   },
   pin_field: {
     height: 48,
@@ -158,7 +159,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginLeft: 6,
     marginRight: 6,
-    fontSize: 30
+    fontSize: 35,
+    paddingBottom: 4
+  },
+  hidden_input: {
+    width: 240,
+    height: 48,
+    opacity: 0,
+    position: "absolute",
+    top: 0
   }
 });
 
@@ -190,7 +199,7 @@ class PinScreen extends React.Component {
     pinExists: true,
     failed_message: "",
     percentage: new Animated.Value(0),
-    fieldNumber: 0
+    focusedNumber: 0
   };
   render() {
     return (
@@ -221,74 +230,58 @@ class PinScreen extends React.Component {
           ) : null}
           <View style={styles.pin_field_wrapper}>
             <TextInput
-              ref="0"
               keyboardType="numeric"
+              maxLength={4}
               autoFocus={true}
-              secureTextEntry={true}
-              maxLength={1}
+              style={styles.hidden_input}
+              onChangeText={text => this.onChangeText(text)}
+              value={this.state.pin}
+            />
+
+            <Text
               style={[
                 styles.pin_field,
                 {
                   borderColor:
-                    this.state.fieldNumber == 0 ? "#f26522" : "#999999"
+                    this.state.focusedNumber == 0 ? "#f26522" : "#999999"
                 }
               ]}
-              underlineColorAndroid="rgba(0,0,0,0)"
-              selectionColor={"white"}
-              onFocus={() => this.onFocus(0)}
-              onChangeText={text => this.onChangeText(text, 0)}
-            />
-            <TextInput
-              ref="1"
-              keyboardType="numeric"
-              secureTextEntry={true}
-              maxLength={1}
+            >
+              {this.state.pin && this.state.pin.length > 0 ? "•" : ""}
+            </Text>
+            <Text
               style={[
                 styles.pin_field,
                 {
                   borderColor:
-                    this.state.fieldNumber == 1 ? "#f26522" : "#999999"
+                    this.state.focusedNumber == 1 ? "#f26522" : "#999999"
                 }
               ]}
-              underlineColorAndroid="rgba(0,0,0,0)"
-              selectionColor={"white"}
-              onFocus={() => this.onFocus(1)}
-              onChangeText={text => this.onChangeText(text, 1)}
-            />
-            <TextInput
-              ref="2"
-              keyboardType="numeric"
-              secureTextEntry={true}
-              maxLength={1}
+            >
+              {this.state.pin && this.state.pin.length > 1 ? "•" : ""}
+            </Text>
+            <Text
               style={[
                 styles.pin_field,
                 {
                   borderColor:
-                    this.state.fieldNumber == 2 ? "#f26522" : "#999999"
+                    this.state.focusedNumber == 2 ? "#f26522" : "#999999"
                 }
               ]}
-              underlineColorAndroid="rgba(0,0,0,0)"
-              selectionColor={"white"}
-              onFocus={() => this.onFocus(2)}
-              onChangeText={text => this.onChangeText(text, 2)}
-            />
-            <TextInput
-              ref="3"
-              keyboardType="numeric"
-              secureTextEntry={true}
-              maxLength={1}
+            >
+              {this.state.pin && this.state.pin.length > 2 ? "•" : ""}
+            </Text>
+            <Text
               style={[
                 styles.pin_field,
                 {
                   borderColor:
-                    this.state.fieldNumber == 3 ? "#f26522" : "#999999"
+                    this.state.focusedNumber == 3 ? "#f26522" : "#999999"
                 }
               ]}
-              underlineColorAndroid="rgba(0,0,0,0)"
-              selectionColor={"white"}
-              onFocus={() => this.onFocus(3)}
-              onChangeText={text => this.onChangeText(text, 3)}
-            />
+            >
+              {this.state.pin && this.state.pin.length > 3 ? "•" : ""}
+            </Text>
           </View>
 
           <View style={{ flex: 1 }}>{alert}</View>
@@ -303,6 +296,13 @@ class PinScreen extends React.Component {
         </Text>
       </View>
     );
+  }
+
+  handleKeyDown() {
+    console.log("delete");
+    if (e.nativeEvent.key == "Enter") {
+      dismissKeyboard();
+    }
   }
 
   get(obj, key) {
@@ -336,19 +336,52 @@ class PinScreen extends React.Component {
     BackHandler.removeEventListener("hardwareBackPress");
   }
 
-  onChangeText(text, fieldNumber) {
-    if (fieldNumber < 3) {
-      if (text.length > 0) {
-        this.onFocus(fieldNumber + 1);
-      }
-    } else {
-      this.authenticationSuccess();
+  onChangeText(text) {
+    this.setState({ pin: text }, this.processText(text));
+    this.updateFocus(text);
+  }
+
+  updateFocus(text) {
+    if (!text || text.length == 0) {
+      this.setState({ focusedNumber: 0 });
+    } else if (text.length == 1) {
+      this.setState({ focusedNumber: 1 });
+    } else if (text.length == 2) {
+      this.setState({ focusedNumber: 2 });
+    } else if (text.length == 3) {
+      this.setState({ focusedNumber: 3 });
     }
+  }
+
+  processText(text) {
+    if (text.length == 4) {
+      if (this.state.change || !this.state.pinExists) {
+        this.savePin(text);
+      } else {
+        this.checkPin(text);
+      }
+    }
+  }
+
+  async checkPin(text) {
+    let pin = await AsyncStorage.getItem("pin");
+    console.log(pin + " check " + md5.hex_md5(text));
+    if (pin == md5.hex_md5(text)) {
+      this.authenticationSuccess();
+    } else {
+      this.authenticationFail();
+    }
+  }
+
+  authenticationFail() {
+    this.setState({
+      pin: null
+    });
+    this.updateFocus();
   }
 
   authenticationSuccess() {
     Keyboard.dismiss();
-    this.savePin();
 
     setTimeout(() => {
       self.resetNavigation("MainDrawer");
@@ -363,15 +396,10 @@ class PinScreen extends React.Component {
     self.props.navigation.dispatch(resetAction);
   };
 
-  onFocus(fieldNumber) {
-    this.setState({
-      fieldNumber: fieldNumber
-    });
-    this.refs[fieldNumber].focus();
-  }
-
-  async savePin() {
-    await AsyncStorage.setItem("pin", "0000");
+  async savePin(text) {
+    await AsyncStorage.setItem("pin", md5.hex_md5(text));
+    console.log("save pin = " + md5.hex_md5(text));
+    this.authenticationSuccess();
   }
 }
 
