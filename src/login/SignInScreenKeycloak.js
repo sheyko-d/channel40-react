@@ -15,13 +15,13 @@ import { StackNavigator, NavigationActions } from "react-navigation";
 var WEBVIEW_REF = "webview";
 var self;
 
-class SignUpScreen extends React.Component {
+class SignInScreen extends React.Component {
   constructor(props) {
     super(props);
     self = this;
   }
   static navigationOptions = {
-    title: "Sign Up",
+    title: "Sign In",
     header: null
   };
   render() {
@@ -31,7 +31,7 @@ class SignUpScreen extends React.Component {
           ref={WEBVIEW_REF}
           source={{
             uri:
-              "http://10.0.2.2:8080/auth/realms/Channel%2040/login-actions/registration?client_id=shoot-third-party&account_id=keycloak-token&redirect_uri=https%3A%2F%2Fdashboard.channel40.com.au%2Fdashboard&response_type=code"
+              "http://10.0.2.2:8080/auth/realms/Channel%2040/protocol/openid-connect/auth?client_id=shoot-third-party&account_id=keycloak-token&redirect_uri=https%3A%2F%2Fdashboard.channel40.com.au%2Fdashboard&response_type=code"
           }}
           onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest} //for iOS
           onNavigationStateChange={this.onShouldStartLoadWithRequest} //for Android
@@ -68,4 +68,4 @@ class SignUpScreen extends React.Component {
   };
 }
 
-export default SignUpScreen;
+export default SignInScreen;

@@ -108,6 +108,8 @@ class LoadingScreen extends React.Component {
     let hasHardwareAsync = await Expo.Fingerprint.hasHardwareAsync();
     let isEnrolledAsync = await Expo.Fingerprint.isEnrolledAsync();
     this.timer = setTimeout(() => {
+      this.resetNavigation("SignInScreen");
+      return;
       if (hasHardwareAsync && isEnrolledAsync) {
         this.resetNavigation("FingerprintScreen");
       } else {
