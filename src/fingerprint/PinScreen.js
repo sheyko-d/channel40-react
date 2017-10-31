@@ -310,6 +310,7 @@ class PinScreen extends React.Component {
 
   buttonTextClicked() {
     if (this.state.pinExists && !this.state.change) {
+      self.props.navigation.navigate("SignInScreen");
     } else {
       this.resetPin();
     }
@@ -318,13 +319,6 @@ class PinScreen extends React.Component {
   async resetPin() {
     await AsyncStorage.removeItem("pin");
     this.authenticationSuccess();
-  }
-
-  handleKeyDown() {
-    console.log("delete");
-    if (e.nativeEvent.key == "Enter") {
-      dismissKeyboard();
-    }
   }
 
   get(obj, key) {

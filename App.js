@@ -119,7 +119,14 @@ class LoadingScreen extends React.Component {
   async checkPinEnabled() {
     let pin = await AsyncStorage.getItem("pin");
     if (pin) {
-      this.resetNavigation("PinScreen");
+      if (
+        Expo.Fingerprint.hasHardwareAsync() &&
+        Expo.Fingerprint.isEnrolledAsync()
+      ) {
+        this.resetNavigation("FingerprintScreen");
+      } else {
+        this.resetNavigation("PinScreen");
+      }
     } else {
       this.resetNavigation("MainDrawer");
     }

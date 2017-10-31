@@ -239,14 +239,12 @@ class FingerprintScreen extends React.Component {
           <View style={{ flex: 1 }}>{alert}</View>
         </View>
         <View style={styles.divider} />
-        <Text style={styles.bottom_text}>
+        <Text
+          style={styles.bottom_text}
+          onPress={() => this.resetNavigation("PinScreen")}
+        >
           Doesn't work?&nbsp;
-          <Text
-            style={{ textDecorationLine: "underline" }}
-            onPress={() => this.resetNavigation("PinScreen")}
-          >
-            Enter pin
-          </Text>
+          <Text style={{ textDecorationLine: "underline" }}>Enter pin</Text>
         </Text>
       </View>
     );
