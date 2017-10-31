@@ -202,6 +202,22 @@ class PinScreen extends React.Component {
     focusedNumber: 0
   };
   render() {
+    let bottomText = null;
+    if (!(!this.state.pinExists && this.state.change)) {
+      bottomText = (
+        <Text
+          style={styles.bottom_text}
+          onPress={() => this.buttonTextClicked()}
+        >
+          <Text style={{ textDecorationLine: "underline" }}>
+            {this.state.pinExists && !this.state.change
+              ? "Forgot your pin?"
+              : "Disable lock screen"}
+          </Text>
+        </Text>
+      );
+    }
+
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor="white" />
@@ -287,15 +303,21 @@ class PinScreen extends React.Component {
           <View style={{ flex: 1 }}>{alert}</View>
         </View>
         <View style={styles.divider} />
-        <Text style={styles.bottom_text}>
-          <Text style={{ textDecorationLine: "underline" }}>
-            {this.state.pinExists && !this.state.change
-              ? "Forgot your pin?"
-              : "Disable lock screen"}
-          </Text>
-        </Text>
+        {bottomText}
       </View>
     );
+  }
+
+  buttonTextClicked() {
+    if (this.state.pinExists && !this.state.change) {
+    } else {
+      this.resetPin();
+    }
+  }
+
+  async resetPin() {
+    await AsyncStorage.removeItem("pin");
+    this.authenticationSuccess();
   }
 
   handleKeyDown() {
@@ -365,7 +387,6 @@ class PinScreen extends React.Component {
 
   async checkPin(text) {
     let pin = await AsyncStorage.getItem("pin");
-    console.log(pin + " check " + md5.hex_md5(text));
     if (pin == md5.hex_md5(text)) {
       this.authenticationSuccess();
     } else {
@@ -398,7 +419,6 @@ class PinScreen extends React.Component {
 
   async savePin(text) {
     await AsyncStorage.setItem("pin", md5.hex_md5(text));
-    console.log("save pin = " + md5.hex_md5(text));
     this.authenticationSuccess();
   }
 }

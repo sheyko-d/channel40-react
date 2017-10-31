@@ -7,7 +7,8 @@ import {
   StyleSheet,
   Platform,
   StatusBar,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from "react-native";
 import { StackNavigator, NavigationActions } from "react-navigation";
 import TimerMixin from "react-timer-mixin";
@@ -110,9 +111,18 @@ class LoadingScreen extends React.Component {
       if (hasHardwareAsync && isEnrolledAsync) {
         this.resetNavigation("FingerprintScreen");
       } else {
-        this.resetNavigation("PinScreen" /*"MainDrawer"*/);
+        this.checkPinEnabled();
       }
     }, 2000);
+  }
+
+  async checkPinEnabled() {
+    let pin = await AsyncStorage.getItem("pin");
+    if (pin) {
+      this.resetNavigation("PinScreen");
+    } else {
+      this.resetNavigation("MainDrawer");
+    }
   }
 
   componentWillUnmount() {
