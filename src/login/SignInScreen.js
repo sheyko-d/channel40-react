@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   button: {
-    width: 260,
+    width: 270,
     paddingTop: 15,
     paddingBottom: 16,
     fontSize: 14,
@@ -65,6 +65,13 @@ const styles = StyleSheet.create({
   facebook_button: {
     backgroundColor: "#3b5998",
     marginTop: 16
+  },
+  forgot_password: {
+    color: "#252525",
+    fontSize: 14,
+    fontFamily: "Akkurat-Normal",
+    marginTop: 24,
+    alignSelf: "center"
   }
 });
 
@@ -75,6 +82,13 @@ class SignInScreen extends React.Component {
   constructor(props) {
     super(props);
     self = this;
+
+    this.focusNextField = this.focusNextField.bind(this);
+    this.inputs = {};
+  }
+  focusNextField(id) {
+    console.log("focusNextField = "+id);
+    this.inputs[id].focus();
   }
   static navigationOptions = {
     title: "CHANNEL 40",
@@ -99,6 +113,7 @@ class SignInScreen extends React.Component {
         <View style={styles.content}>
           <TextInput
             placeholder="Username"
+            returnKeyType={"next"}
             style={[
               styles.text_input,
               {
@@ -107,9 +122,17 @@ class SignInScreen extends React.Component {
             ]}
             onFocus={() => this.updateSelection(true)}
             underlineColorAndroid="rgba(0,0,0,0)"
+            blurOnSubmit={false}
+            onSubmitEditing={() => {
+              this.focusNextField("two");
+            }}
+            ref={input => {
+              this.inputs["one"] = input;
+            }}
           />
           <TextInput
             placeholder="Password"
+            returnKeyType={"done"}
             secureTextEntry={true}
             style={[
               styles.text_input,
@@ -119,6 +142,9 @@ class SignInScreen extends React.Component {
             ]}
             onFocus={() => this.updateSelection(false)}
             underlineColorAndroid="rgba(0,0,0,0)"
+            ref={input => {
+              this.inputs["two"] = input;
+            }}
           />
           <Text style={styles.button} onPress={() => this.login()}>
             SIGN IN TO YOUR ACCOUNT
@@ -129,13 +155,23 @@ class SignInScreen extends React.Component {
           >
             SIGN IN WITH FACEBOOK
           </Text>
+
+          <Text
+            style={styles.forgot_password}
+            onPress={() => this.resetNavigation("PinScreen")}
+          >
+            Forgot your password?&nbsp;
+            <Text style={{ textDecorationLine: "underline" }}>
+              Send a reset link
+            </Text>
+          </Text>
         </View>
       </View>
     );
   }
 
-  updateSelection(selected){
-    this.setState({selectedUsername: selected});
+  updateSelection(selected) {
+    this.setState({ selectedUsername: selected });
   }
 
   resetNavigation = targetRoute => {
