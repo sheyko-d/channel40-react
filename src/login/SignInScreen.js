@@ -53,14 +53,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#F26522",
     color: "#FFF",
     fontFamily: "Graystroke-Regular",
     borderRadius: 2,
     paddingLeft: 16,
     paddingRight: 16,
-    marginTop: 24,
-    elevation: 2
+    marginTop: 24
   },
   facebook_button: {
     backgroundColor: "#3b5998",
@@ -87,7 +85,7 @@ class SignInScreen extends React.Component {
     this.inputs = {};
   }
   focusNextField(id) {
-    console.log("focusNextField = "+id);
+    console.log("focusNextField = " + id);
     this.inputs[id].focus();
   }
   static navigationOptions = {
@@ -122,12 +120,12 @@ class SignInScreen extends React.Component {
             ]}
             onFocus={() => this.updateSelection(true)}
             underlineColorAndroid="rgba(0,0,0,0)"
-            blurOnSubmit={false}
             onSubmitEditing={() => {
-              this.focusNextField("two");
+              this.focusNextField("password");
             }}
-            ref={input => {
-              this.inputs["one"] = input;
+            onChangeText={username => {
+              this.setState({ username: username });
+              this.validateFields(username, this.state.password);
             }}
           />
           <TextInput
@@ -143,10 +141,23 @@ class SignInScreen extends React.Component {
             onFocus={() => this.updateSelection(false)}
             underlineColorAndroid="rgba(0,0,0,0)"
             ref={input => {
-              this.inputs["two"] = input;
+              this.inputs["password"] = input;
+            }}
+            onChangeText={password => {
+              this.setState({ password: password });
+              this.validateFields(this.state.username, password);
             }}
           />
-          <Text style={styles.button} onPress={() => this.login()}>
+          <Text
+            style={[
+              styles.button,
+              {
+                backgroundColor: this.state.fieldsValid ? "#F26522" : "#c7c7c7",
+                elevation: this.state.fieldsValid ? 2 : 0
+              }
+            ]}
+            onPress={() => this.login()}
+          >
             SIGN IN TO YOUR ACCOUNT
           </Text>
           <Text
@@ -168,6 +179,18 @@ class SignInScreen extends React.Component {
         </View>
       </View>
     );
+  }
+
+  login() {
+    if (!this.state.fieldsValid) return;
+
+    console.log(this.state.username + ", " + this.state.password);
+  }
+
+  validateFields(username, password) {
+    this.setState({
+      fieldsValid: username && password
+    });
   }
 
   updateSelection(selected) {
