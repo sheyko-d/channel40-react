@@ -10,7 +10,9 @@ import {
   TouchableOpacity,
   WebView,
   TextInput,
-  Platform
+  Platform,
+  AsyncStorage,
+  Keyboard
 } from "react-native";
 import { StackNavigator, NavigationActions } from "react-navigation";
 import Constants from "../util/Constants.js";
@@ -87,10 +89,23 @@ class SignInScreen extends React.Component {
     this.focusNextField = this.focusNextField.bind(this);
     this.inputs = {};
   }
+
+  componentWillMount() {
+    this.prefillData();
+  }
+
+  async prefillData() {
+    let username = await AsyncStorage.getItem("username");
+    if (username) {
+      this.setState({ username: username });
+      this.focusNextField("password");
+    }
+  }
+
   focusNextField(id) {
-    console.log("focusNextField = " + id);
     this.inputs[id].focus();
   }
+
   static navigationOptions = {
     title: "CHANNEL 40",
     headerStyle: {
@@ -126,10 +141,12 @@ class SignInScreen extends React.Component {
             onSubmitEditing={() => {
               this.focusNextField("password");
             }}
+            selectionColor={"#f26522"}
             onChangeText={username => {
               this.setState({ username: username });
               this.validateFields(username, this.state.password);
             }}
+            value={this.state.username}
           />
           <TextInput
             placeholder="Password"
@@ -142,6 +159,7 @@ class SignInScreen extends React.Component {
               }
             ]}
             onFocus={() => this.updateSelection(false)}
+            selectionColor={"#f26522"}
             underlineColorAndroid="rgba(0,0,0,0)"
             ref={input => {
               this.inputs["password"] = input;
@@ -198,9 +216,27 @@ class SignInScreen extends React.Component {
       url: Constants.BASE_URL + "/user/login",
       data: formdata
     }).then(response => {
-      console.log(JSON.stringify(response.data));
-      //alert(JSON.stringify(response._bodyInit.response.api_token));
+      this.processResponse(response);
     });
+  }
+
+  processResponse(response) {
+    // TODO: Check if respone is successful
+    if (true) {
+      let api_token = response.data.RESPONSE.api_token;
+      this.saveData(api_token, this.state.username);
+    }
+  }
+
+  async saveData(api_token, username) {
+    await AsyncStorage.setItem("api_token", api_token);
+    await AsyncStorage.setItem("username", username);
+
+    Keyboard.dismiss();
+
+    setTimeout(() => {
+      self.resetNavigation("MainDrawer");
+    }, 100);
   }
 
   validateFields(username, password) {
