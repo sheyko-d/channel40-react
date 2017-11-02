@@ -13,6 +13,8 @@ import {
   Platform
 } from "react-native";
 import { StackNavigator, NavigationActions } from "react-navigation";
+import Constants from "../util/Constants.js";
+var axios = require("axios");
 
 var WEBVIEW_REF = "webview";
 var self;
@@ -56,6 +58,7 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontFamily: "Graystroke-Regular",
     borderRadius: 2,
+    elevation: 2,
     paddingLeft: 16,
     paddingRight: 16,
     marginTop: 24
@@ -184,7 +187,20 @@ class SignInScreen extends React.Component {
   login() {
     if (!this.state.fieldsValid) return;
 
-    console.log(this.state.username + ", " + this.state.password);
+    let formdata = new FormData();
+    formdata.append("user_name", this.state.username);
+    formdata.append("password", this.state.password);
+    formdata.append("source", "react_native");
+
+    // Send a POST request
+    axios({
+      method: "post",
+      url: Constants.BASE_URL + "/user/login",
+      data: formdata
+    }).then(response => {
+      console.log(JSON.stringify(response.data));
+      //alert(JSON.stringify(response._bodyInit.response.api_token));
+    });
   }
 
   validateFields(username, password) {
