@@ -71,10 +71,14 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     tintColor: "#d5d6d7"
-  }
+  },
 });
 
 class ProfileScreen extends React.Component {
+  state = {
+    id: "",
+    name: ""
+  };
   render() {
     const { navigate } = this.props.screenProps;
     return (
@@ -82,15 +86,24 @@ class ProfileScreen extends React.Component {
         <ScrollView>
           <View style={styles.header}>
             <Image
-              style={styles.header_photo}
-              borderRadius={48}
+              style={styles.header_truck_photo}
               source={{
-                uri:
-                  "https://lifeafterhavingalife.files.wordpress.com/2011/02/big-trucker.jpg"
+                uri: this.state.truck_photo
               }}
             />
-            <Text style={styles.header_text}>PROFILE ID 1</Text>
-            <Text style={styles.header_name}>TESTER DRIVER</Text>
+            <Image
+              style={styles.header_photo}
+              borderRadius={48}
+              source={
+                this.state.photo
+                  ? {
+                      uri: this.state.photo
+                    }
+                  : require("../../../../assets/icons/empty_user_dk.png")
+              }
+            />
+            <Text style={styles.header_text}>PROFILE ID {this.state.id}</Text>
+            <Text style={styles.header_name}>{this.state.name}</Text>
             <Text style={styles.header_text}>EDIT YOUR PROFILE</Text>
           </View>
           <View style={styles.menu}>
@@ -183,6 +196,21 @@ class ProfileScreen extends React.Component {
         />
       </View>
     );
+  }
+
+  componentWillMount() {
+    this.fillProfile();
+  }
+
+  async fillProfile() {
+    let profile = await AsyncStorage.getItem("profile");
+    profile = JSON.parse(profile);
+    this.setState({
+      id: profile.id,
+      name: (profile.first_name + " " + profile.last_name).toUpperCase(),
+      photo: profile.photo,
+      truck_photo: profile.data.truck_photo
+    });
   }
 
   async logOut() {
