@@ -17,6 +17,7 @@ import MainTabs from "./src/driver/MainTabs";
 import MainDrawer from "./src/driver/MainDrawer";
 import SplashScreen from "./src/login/SplashScreen";
 import SignInScreen from "./src/login/SignInScreen";
+import SignInScreenKeycloak from "./src/login/SignInScreenKeycloak";
 import SignUpScreen from "./src/login/SignUpScreen";
 import FingerprintScreen from "./src/fingerprint/FingerprintScreen";
 import PinScreen from "./src/fingerprint/PinScreen";
@@ -102,20 +103,28 @@ class LoadingScreen extends React.Component {
     });
 
     this.setState({ fontLoaded: true });
+    this.timer = setTimeout(() => {
+      this.openNextScreen();
+    }, 2000);
+  }
+
+  async openNextScreen() {
+    let profile = await AsyncStorage.getItem("profile");
+    console.log(profile);
+    if (!profile) {
+      this.resetNavigation("SplashScreen");
+      return;
+    }
 
     // Check if device have a fingerprint scanner
     // and if some fingerprints are enrolled
     let hasHardwareAsync = await Expo.Fingerprint.hasHardwareAsync();
     let isEnrolledAsync = await Expo.Fingerprint.isEnrolledAsync();
-    this.timer = setTimeout(() => {
-      this.resetNavigation("SignInScreen");
-      return;
-      if (hasHardwareAsync && isEnrolledAsync) {
-        this.resetNavigation("FingerprintScreen");
-      } else {
-        this.checkPinEnabled();
-      }
-    }, 2000);
+    if (hasHardwareAsync && isEnrolledAsync) {
+      this.resetNavigation("FingerprintScreen");
+    } else {
+      this.checkPinEnabled();
+    }
   }
 
   async checkPinEnabled() {
@@ -171,6 +180,7 @@ const SimpleApp = StackNavigator(
     LoadingScreen: { screen: LoadingScreen },
     SplashScreen: { screen: SplashScreen },
     SignInScreen: { screen: SignInScreen },
+    SignInScreenKeycloak: { screen: SignInScreenKeycloak },
     SignUpScreen: { screen: SignUpScreen },
     FingerprintScreen: { screen: FingerprintScreen },
     PinScreen: { screen: PinScreen },

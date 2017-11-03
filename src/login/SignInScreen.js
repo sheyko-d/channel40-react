@@ -96,7 +96,9 @@ class SignInScreen extends React.Component {
 
   async prefillData() {
     let username = await AsyncStorage.getItem("username");
+    let profile = await AsyncStorage.getItem("profile");
     if (username) {
+      console.log(profile);
       this.setState({ username: username });
       this.focusNextField("password");
     }
@@ -168,6 +170,9 @@ class SignInScreen extends React.Component {
               this.setState({ password: password });
               this.validateFields(this.state.username, password);
             }}
+            onSubmitEditing={() => {
+              this.login();
+            }}
           />
           <Text
             style={[
@@ -205,6 +210,8 @@ class SignInScreen extends React.Component {
   login() {
     if (!this.state.fieldsValid) return;
 
+    Keyboard.dismiss();
+
     let formdata = new FormData();
     formdata.append("user_name", this.state.username);
     formdata.append("password", this.state.password);
@@ -223,20 +230,18 @@ class SignInScreen extends React.Component {
   processResponse(response) {
     // TODO: Check if respone is successful
     if (true) {
-      let api_token = response.data.RESPONSE.api_token;
-      this.saveData(api_token, this.state.username);
+      let profile = JSON.stringify(response.data.RESPONSE);
+      let api_token = JSON.stringify(response.data.RESPONSE.api_token);
+      this.saveData(profile, api_token, this.state.username);
     }
   }
 
-  async saveData(api_token, username) {
+  async saveData(profile, api_token, username) {
+    await AsyncStorage.setItem("profile", profile);
     await AsyncStorage.setItem("api_token", api_token);
     await AsyncStorage.setItem("username", username);
 
-    Keyboard.dismiss();
-
-    setTimeout(() => {
-      self.resetNavigation("MainDrawer");
-    }, 100);
+    self.resetNavigation("MainDrawer");
   }
 
   validateFields(username, password) {

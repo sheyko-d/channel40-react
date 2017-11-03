@@ -15,7 +15,7 @@ import { StackNavigator, NavigationActions } from "react-navigation";
 var WEBVIEW_REF = "webview";
 var self;
 
-class SignInScreen extends React.Component {
+class SignInScreenKeycloak extends React.Component {
   constructor(props) {
     super(props);
     self = this;
@@ -68,4 +68,4 @@ class SignInScreen extends React.Component {
   };
 }
 
-export default SignInScreen;
+export default SignInScreenKeycloak;

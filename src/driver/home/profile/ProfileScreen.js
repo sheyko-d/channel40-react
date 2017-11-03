@@ -1,7 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  AsyncStorage
+} from "react-native";
 import { LinearGradient } from "expo";
 import Touchable from "react-native-touchable-safe";
+import { NavigationActions } from "react-navigation";
 
 const styles = StyleSheet.create({
   container: {
@@ -157,6 +165,16 @@ class ProfileScreen extends React.Component {
               </View>
             </Touchable>
             <View style={styles.menu_divider} />
+            <Touchable onPress={() => this.logOut()}>
+              <View style={styles.menu_item}>
+                <Text style={styles.menu_text}>LOG OUT</Text>
+                <Image
+                  style={styles.menu_arrow}
+                  source={require("../../../../assets/icons/ic_right_arrow_circle_16dp.png")}
+                />
+              </View>
+            </Touchable>
+            <View style={styles.menu_divider} />
           </View>
         </ScrollView>
         <LinearGradient
@@ -166,6 +184,20 @@ class ProfileScreen extends React.Component {
       </View>
     );
   }
+
+  async logOut() {
+    await AsyncStorage.removeItem("profile");
+
+    this.resetNavigation("SplashScreen");
+  }
+
+  resetNavigation = targetRoute => {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: targetRoute })]
+    });
+    this.props.screenProps.dispatch(resetAction);
+  };
 }
 
 export default ProfileScreen;
