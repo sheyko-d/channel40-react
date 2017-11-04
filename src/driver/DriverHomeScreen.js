@@ -156,7 +156,7 @@ class DriverHomeScreen extends React.Component {
   }
 
   displayMarkers(jobs) {
-    console.log("Loaded markers: "+jobs.length);
+    console.log("Loaded markers: " + jobs.length);
     this.setState({ jobs: jobs });
   }
 
@@ -279,6 +279,21 @@ class DriverHomeScreen extends React.Component {
           showsUserLocation={true}
           region={this.state.region}
         >
+          {this.state.jobs
+            ? this.state.jobs.map(
+                job =>
+                  job.pick_point.lat && parseFloat(job.pick_point.lat) ? (
+                    <MapView.Marker
+                      key={job.id}
+                      coordinate={{
+                        latitude: parseFloat(job.pick_point.lat),
+                        longitude: parseFloat(job.pick_point.lng)
+                      }}
+                      title={job.title}
+                    />
+                  ) : null
+              )
+            : null}
         </MapView>
         <LinearGradient
           colors={["transparent", "rgba(0,0,0,0.1)"]}
