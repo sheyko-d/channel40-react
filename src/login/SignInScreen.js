@@ -231,7 +231,7 @@ class SignInScreen extends React.Component {
     // TODO: Check if respone is successful
     if (true) {
       let profile = JSON.stringify(response.data.RESPONSE);
-      let api_token = JSON.stringify(response.data.RESPONSE.api_token);
+      let api_token = response.data.RESPONSE.api_token;
       this.saveData(profile, api_token, this.state.username);
     }
   }

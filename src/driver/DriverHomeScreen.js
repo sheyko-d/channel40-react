@@ -9,16 +9,13 @@ import {
   Image,
   StatusBar,
   Platform,
-  AsyncStorage
+  AsyncStorage,
+  Alert
 } from "react-native";
-import {
-  MapView,
-  Location,
-  Constants,
-  Permissions,
-  LinearGradient
-} from "expo";
+import { MapView, Location, Permissions, LinearGradient } from "expo";
 import { StackNavigator, TabNavigator } from "react-navigation";
+import Constants from "../util/Constants.js";
+var axios = require("axios");
 
 const styles = StyleSheet.create({
   container: {
@@ -133,6 +130,36 @@ class DriverHomeScreen extends React.Component {
     }
   };
 
+  /* Retrieves jobs from server. */
+  async loadNearbyJobs() {
+    let api_token = await AsyncStorage.getItem("api_token");
+    axios({
+      method: "get",
+      url:
+        Constants.BASE_URL +
+        "/freight/nearby?lat=" +
+        this.state.region.latitude +
+        "&lng=" +
+        this.state.region.longitude,
+      headers: { Authorization: "Token " + api_token }
+    })
+      .then(response => {
+        this.displayMarkers(response.data.RESPONSE.data);
+      })
+      .catch(function(error) {
+        if (error.response) {
+          Alert.alert("Server Error", JSON.stringify(error.response.data));
+        } else {
+          console.log("Server error: " + error);
+        }
+      });
+  }
+
+  displayMarkers(jobs) {
+    console.log("Loaded markers: "+jobs.length);
+    this.setState({ jobs: jobs });
+  }
+
   componentDidMount() {
     this.updateLocation();
 
@@ -148,14 +175,17 @@ class DriverHomeScreen extends React.Component {
     latitude = JSON.parse(latitude);
     longitude = JSON.parse(longitude);
     if (latitude !== null) {
-      this.setState({
-        region: {
-          latitude: latitude,
-          longitude: longitude,
-          latitudeDelta: 3.5,
-          longitudeDelta: 0
-        }
-      });
+      this.setState(
+        {
+          region: {
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: 3.5,
+            longitudeDelta: 0
+          }
+        },
+        () => this.loadNearbyJobs()
+      );
     }
     this._getLocationAsync({ enableHighAccuracy: true });
   }
@@ -178,14 +208,17 @@ class DriverHomeScreen extends React.Component {
         JSON.stringify(location.coords.longitude)
       );
 
-      this.setState({
-        region: {
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-          latitudeDelta: 3.5,
-          longitudeDelta: 0
-        }
-      });
+      this.setState(
+        {
+          region: {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            latitudeDelta: 3.5,
+            longitudeDelta: 0
+          }
+        },
+        () => this.loadNearbyJobs()
+      );
     }
   };
 
@@ -245,7 +278,8 @@ class DriverHomeScreen extends React.Component {
           style={styles.map}
           showsUserLocation={true}
           region={this.state.region}
-        />
+        >
+        </MapView>
         <LinearGradient
           colors={["transparent", "rgba(0,0,0,0.1)"]}
           style={styles.gradient}

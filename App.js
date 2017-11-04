@@ -110,7 +110,6 @@ class LoadingScreen extends React.Component {
 
   async openNextScreen() {
     let profile = await AsyncStorage.getItem("profile");
-    console.log(profile);
     if (!profile) {
       this.resetNavigation("SplashScreen");
       return;
