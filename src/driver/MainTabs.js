@@ -9,7 +9,7 @@ import {
   Image
 } from "react-native";
 import { StackNavigator, TabNavigator } from "react-navigation";
-import DriverHomeScreen from "./DriverHomeScreen";
+import FindLoadsScreen from "./home/findloads/FindLoadsScreen";
 import MyJobsScreen from "./home/MyJobsScreen";
 import MessagesScreen from "../messages/MessagesScreen";
 import PaymentsScreen from "./home/payments/PaymentsScreen";
@@ -52,14 +52,10 @@ const styles = StyleSheet.create({
   }
 });
 
-const DriverHomeScreenTab = ({ navigation }) => (
-  <DriverHomeScreen navigation={navigation} />
-);
-
 const MainTabsNavigator = TabNavigator(
   {
     MainTab: {
-      screen: DriverHomeScreenTab,
+      screen: FindLoadsScreen,
       path: "/",
       navigationOptions: {
         title: "Welcome",

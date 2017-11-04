@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { MapView, Location, Permissions, LinearGradient } from "expo";
 import { StackNavigator, TabNavigator } from "react-navigation";
-import Constants from "../util/Constants.js";
+import Constants from "../../../util/Constants.js";
 var axios = require("axios");
 
 const styles = StyleSheet.create({
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class DriverHomeScreen extends React.Component {
+class FindLoadsMapScreen extends React.Component {
   state = {
     errorMessage: null,
     region: {
@@ -140,7 +140,8 @@ class DriverHomeScreen extends React.Component {
         "/freight/nearby?lat=" +
         this.state.region.latitude +
         "&lng=" +
-        this.state.region.longitude,
+        this.state.region.longitude +
+        "&count=50",
       headers: { Authorization: "Token " + api_token }
     })
       .then(response => {
@@ -156,7 +157,6 @@ class DriverHomeScreen extends React.Component {
   }
 
   displayMarkers(jobs) {
-    console.log("Loaded markers: " + jobs.length);
     this.setState({ jobs: jobs });
   }
 
@@ -246,7 +246,7 @@ class DriverHomeScreen extends React.Component {
             <View style={styles.top_bar_wrapper}>
               <Image
                 style={styles.top_bar_nearby}
-                source={require("../../assets/icons/nearby_icon.png")}
+                source={require("../../../../assets/icons/nearby_icon.png")}
               />
               <Text style={styles.top_bar_text}>NEARBY</Text>
             </View>
@@ -289,6 +289,7 @@ class DriverHomeScreen extends React.Component {
                         latitude: parseFloat(job.pick_point.lat),
                         longitude: parseFloat(job.pick_point.lng)
                       }}
+                      image={require("../../../../assets/icons/marker.png")}
                       title={job.title}
                     />
                   ) : null
@@ -303,11 +304,13 @@ class DriverHomeScreen extends React.Component {
     );
   }
 
-  openNearbyScreen() {}
+  openNearbyScreen() {
+    this.props.navigation.navigate("FindLoadsListScreen");
+  }
 
   openExpressScreen() {}
 
   openGeneralScreen() {}
 }
 
-export default DriverHomeScreen;
+export default FindLoadsMapScreen;

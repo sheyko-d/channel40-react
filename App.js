@@ -12,8 +12,6 @@ import {
 } from "react-native";
 import { StackNavigator, NavigationActions } from "react-navigation";
 import TimerMixin from "react-timer-mixin";
-import DriverHomeScreen from "./src/driver/DriverHomeScreen";
-import MainTabs from "./src/driver/MainTabs";
 import MainDrawer from "./src/driver/MainDrawer";
 import SplashScreen from "./src/login/SplashScreen";
 import SignInScreen from "./src/login/SignInScreen";
@@ -21,6 +19,7 @@ import SignInScreenKeycloak from "./src/login/SignInScreenKeycloak";
 import SignUpScreen from "./src/login/SignUpScreen";
 import FingerprintScreen from "./src/fingerprint/FingerprintScreen";
 import PinScreen from "./src/fingerprint/PinScreen";
+import FindLoadsScreen from "./src/driver/home/findloads/FindLoadsScreen";
 import { Font } from "expo";
 
 const styles = StyleSheet.create({
@@ -189,7 +188,8 @@ const SimpleApp = StackNavigator(
         headerLeft: <DrawerButton navigation={navigation} />
       })
     },
-    SplashScreen: { screen: SplashScreen }
+    SplashScreen: { screen: SplashScreen },
+    FindLoadsScreen: { screen: FindLoadsScreen }
   },
   {
     headerMode: "screen"
