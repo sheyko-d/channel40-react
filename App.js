@@ -104,7 +104,7 @@ class LoadingScreen extends React.Component {
     this.setState({ fontLoaded: true });
     this.timer = setTimeout(() => {
       this.openNextScreen();
-    }, 2000);
+    }, 1000);
   }
 
   async openNextScreen() {

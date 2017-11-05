@@ -161,6 +161,8 @@ class FindLoadsMapScreen extends React.Component {
   }
 
   componentDidMount() {
+    this.props.navigation.navigate("FindLoadsListScreen");
+    
     this.updateLocation();
 
     let that = this;
