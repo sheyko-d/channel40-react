@@ -85,16 +85,16 @@ const styles = StyleSheet.create({
     fontFamily: "Graystroke-Regular"
   },
   job_icon: {
-    width: 36,
-    height: 24,
-    marginRight: 16,
+    height: 36,
+    marginRight: 28,
     tintColor: "#252525"
   },
-  job_details_wrapper: {
+  job_detail_wrapper: {
     paddingLeft: 24,
-    paddingRight: 24
+    paddingRight: 24,
+    paddingTop: 6
   },
-  job_details_title: {
+  job_detail_title: {
     color: "#999999",
     fontSize: 10,
     marginLeft: 2,
@@ -105,6 +105,34 @@ const styles = StyleSheet.create({
     color: "#252525",
     fontSize: 16,
     fontFamily: "Akkurat-Normal"
+  },
+  job_action_wrapper: {
+    flex: 1,
+    flexDirection: "row"
+  },
+  job_action: {
+    flex: 2,
+    paddingTop: 24,
+    paddingBottom: 24,
+    textAlign: "center",
+    fontFamily: "Graystroke-Regular",
+    fontSize: 15,
+    color: "#111"
+  },
+  job_negotiate_counter: {
+    fontSize: 10,
+    lineHeight: 12,
+    paddingLeft: 1,
+    fontFamily: "Graystroke-Regular",
+    backgroundColor: "#f26522",
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    marginLeft: 8,
+    color: "#fff",
+    textAlign: "center",
+    elevation: 2,
+    alignSelf: "center"
   }
 });
 
@@ -167,16 +195,16 @@ class FindLoadsListScreen extends React.Component {
                   </Text>
                 </View>
                 <View style={styles.divider} />
-                <View style={styles.job_details_wrapper}>
+                <View style={styles.job_detail_wrapper}>
                   <View style={{ flexDirection: "row" }}>
                     <Image
                       style={styles.job_icon}
-                      height={24}
+                      width={22}
                       resizeMode={"contain"}
                       source={require("../../../../assets/icons/marker_transparent.png")}
                     />
                     <View>
-                      <Text style={styles.job_details_title}>
+                      <Text style={styles.job_detail_title}>
                         PICK UP ADDRESS
                       </Text>
                       <Text style={styles.job_details}>
@@ -192,12 +220,12 @@ class FindLoadsListScreen extends React.Component {
                   >
                     <Image
                       style={styles.job_icon}
-                      height={24}
+                      width={22}
                       resizeMode={"contain"}
                       source={require("../../../../assets/icons/marker_transparent.png")}
                     />
                     <View>
-                      <Text style={styles.job_details_title}>
+                      <Text style={styles.job_detail_title}>
                         DROP OFF ADDRESS
                       </Text>
                       <Text style={styles.job_details}>
@@ -213,12 +241,12 @@ class FindLoadsListScreen extends React.Component {
                   >
                     <Image
                       style={styles.job_icon}
-                      height={24}
+                      width={24}
                       resizeMode={"contain"}
                       source={require("../../../../assets/icons/pickup_date.png")}
                     />
                     <View>
-                      <Text style={styles.job_details_title}>
+                      <Text style={styles.job_detail_title}>
                         AVAILABLE FOR PICKUP FROM
                       </Text>
                       <Timestamp
@@ -233,6 +261,22 @@ class FindLoadsListScreen extends React.Component {
                 <View
                   style={[styles.divider, { marginTop: 16, marginBottom: 0 }]}
                 />
+                <View style={styles.job_action_wrapper}>
+                  <Text style={styles.job_action}>ACCEPT</Text>
+                  <Text style={styles.job_action}>DECLINE</Text>
+                  <View
+                    style={{
+                      flex: 3,
+                      flexDirection: "row",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <Text style={[styles.job_action, { flex: null }]}>
+                      NEGOTIATE
+                    </Text>
+                    <Text style={styles.job_negotiate_counter}>+</Text>
+                  </View>
+                </View>
               </View>
             )}
             keyExtractor={this.keyExtractor}
