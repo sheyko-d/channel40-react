@@ -6,7 +6,8 @@ import {
   Platform,
   AsyncStorage,
   FlatList,
-  Image
+  Image,
+  Alert
 } from "react-native";
 import Constants from "../../../util/Constants.js";
 import Timestamp from "react-timestamp";
@@ -72,7 +73,8 @@ const styles = StyleSheet.create({
   },
   job_price_wrapper: {
     paddingLeft: 81,
-    paddingRight: 16
+    paddingRight: 16,
+    flexDirection: "row"
   },
   job_price_title: {
     color: "#73b322",
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
   },
   job_icon: {
     height: 36,
-    marginRight: 28,
+    marginRight: 32,
     tintColor: "#252525"
   },
   job_detail_wrapper: {
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
   job_negotiate_counter: {
     fontSize: 10,
     lineHeight: 12,
-    paddingLeft: 1,
+    paddingLeft: 2,
     fontFamily: "Graystroke-Regular",
     backgroundColor: "#f26522",
     width: 16,
@@ -132,7 +134,31 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     elevation: 2,
+    marginTop: 1,
     alignSelf: "center"
+  },
+  job_gst: {
+    color: "#999999",
+    fontSize: 16,
+    fontFamily: "Akkurat-Normal",
+    marginBottom: 1,
+    marginTop: -11.5,
+    marginLeft: 10,
+    lineHeight: 30,
+    flex: 1
+  },
+  job_info_icon: {
+    height: 24,
+    width: 24,
+    alignSelf: "center"
+  },
+  job_info: {
+    fontSize: 16,
+    color: "#999999",
+    fontFamily: "Akkurat-Normal",
+    alignSelf: "center",
+    marginLeft: 4,
+    marginRight: 8
   }
 });
 
@@ -189,10 +215,24 @@ class FindLoadsListScreen extends React.Component {
                 </View>
                 <View style={styles.divider} />
                 <View style={styles.job_price_wrapper}>
-                  <Text style={styles.job_price_title}>YOU'LL RECEIVE</Text>
-                  <Text style={styles.job_price}>
-                    {currencyFormatter.format(item.price, { code: "AUD" })}
+                  <View>
+                    <Text style={styles.job_price_title}>YOU'LL RECEIVE</Text>
+                    <Text style={styles.job_price}>
+                      {currencyFormatter.format(item.price, { code: "AUD" })}
+                    </Text>
+                  </View>
+                  <Text style={styles.job_gst}>
+                    including{"\n"}
+                    {currencyFormatter.format(item.price / 10, {
+                      code: "AUD"
+                    })}{" "}
+                    GST
                   </Text>
+                  <Image
+                    style={styles.job_info_icon}
+                    source={require("../../../../assets/icons/fees_info.png")}
+                  />
+                  <Text style={styles.job_info}>fees</Text>
                 </View>
                 <View style={styles.divider} />
                 <View style={styles.job_detail_wrapper}>
