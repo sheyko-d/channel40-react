@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     fontFamily: "Graystroke-Regular",
     marginBottom: 4,
     lineHeight: 32,
-    marginTop: -4,
+    marginTop: -4
   },
   job_id: {
     color: "#999999",
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
   job_negotiate_counter: {
     fontSize: 10,
-    lineHeight: 12,
+    lineHeight: 12.5,
     paddingLeft: 2,
     fontFamily: "Graystroke-Regular",
     backgroundColor: "#73b322",
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     elevation: 2,
-    marginTop: 1,
+    marginTop: 1.5,
     alignSelf: "center"
   },
   job_gst: {
@@ -257,7 +257,8 @@ class FindLoadsListScreen extends React.Component {
                         PICK UP ADDRESS
                       </Text>
                       <Text style={styles.job_details}>
-                        {item.pick_point.address}
+                        {item.pick_point.suburb},{" "}
+                        {this.shortenState(item.pick_point.state)}
                       </Text>
                     </View>
                   </View>
@@ -278,7 +279,8 @@ class FindLoadsListScreen extends React.Component {
                         DROP OFF ADDRESS
                       </Text>
                       <Text style={styles.job_details}>
-                        {item.drop_point.address}
+                        {item.drop_point.suburb},{" "}
+                        {this.shortenState(item.drop_point.state)}
                       </Text>
                     </View>
                   </View>
@@ -294,7 +296,7 @@ class FindLoadsListScreen extends React.Component {
                       resizeMode={"contain"}
                       source={require("../../../../assets/icons/pickup_date.png")}
                     />
-                    <View>
+                    <View style={{ marginLeft: -2 }}>
                       <Text style={styles.job_detail_title}>
                         AVAILABLE FOR PICKUP FROM
                       </Text>
@@ -337,6 +339,30 @@ class FindLoadsListScreen extends React.Component {
       </View>
     );
   }
+
+  shortenState(state) {
+    stateLower = state.toLowerCase();
+
+    switch (stateLower) {
+      case "new south wales":
+        return "NSW";
+      case "northern territory":
+        return "NT";
+      case "queensland":
+        return "QLD";
+      case "south australia":
+        return "SA";
+      case "tasmania":
+        return "TAS";
+      case "victoria":
+        return "VIC";
+      case "western australia":
+        return "WA";
+      default:
+        return state;
+    }
+  }
+
   keyExtractor = (item, index) => item.id;
 
   /* Retrieves jobs from server. */
@@ -357,6 +383,7 @@ class FindLoadsListScreen extends React.Component {
     })
       .then(response => {
         this.displayJobs(response.data.RESPONSE.data);
+        //console.log(response.data.RESPONSE.data);
       })
       .catch(function(error) {
         if (error.response) {
