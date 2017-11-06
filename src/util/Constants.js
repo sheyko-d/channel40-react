@@ -1,4 +1,4 @@
 const Constants = {
-  BASE_URL: "https://api-dev.channel40.com.au"
+  BASE_URL: "https://api.channel40.com.au"
 };
 export default Constants;

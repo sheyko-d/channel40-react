@@ -35,7 +35,9 @@ const styles = StyleSheet.create({
     color: "#252525",
     fontSize: 20,
     fontFamily: "Graystroke-Regular",
-    marginBottom: 4
+    marginBottom: 4,
+    lineHeight: 32,
+    marginTop: -4,
   },
   job_id: {
     color: "#999999",
@@ -50,7 +52,8 @@ const styles = StyleSheet.create({
   },
   job_title_wrapper: {
     alignSelf: "center",
-    marginBottom: 2
+    marginBottom: 2,
+    flex: 1
   },
   job_wrapper: {
     backgroundColor: "#fff",
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
     lineHeight: 12,
     paddingLeft: 2,
     fontFamily: "Graystroke-Regular",
-    backgroundColor: "#f26522",
+    backgroundColor: "#73b322",
     width: 16,
     height: 16,
     borderRadius: 8,
@@ -142,9 +145,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Akkurat-Normal",
     marginBottom: 1,
-    marginTop: -11.5,
+    marginTop: -12,
     marginLeft: 10,
-    lineHeight: 30,
+    lineHeight: 30.5,
     flex: 1
   },
   job_info_icon: {
@@ -207,7 +210,7 @@ class FindLoadsListScreen extends React.Component {
                     }
                   />
                   <View style={styles.job_title_wrapper}>
-                    <Text style={styles.job_title}>
+                    <Text style={styles.job_title} numberOfLines={2}>
                       {item.title.toUpperCase()}
                     </Text>
                     <Text style={styles.job_id}>Job ID: {item.id}</Text>
@@ -218,16 +221,22 @@ class FindLoadsListScreen extends React.Component {
                   <View>
                     <Text style={styles.job_price_title}>YOU'LL RECEIVE</Text>
                     <Text style={styles.job_price}>
-                      {currencyFormatter.format(item.price, { code: "AUD" })}
+                      {item.price !== 0
+                        ? currencyFormatter.format(item.price, { code: "AUD" })
+                        : "NEGOTIABLE"}
                     </Text>
                   </View>
-                  <Text style={styles.job_gst}>
-                    including{"\n"}
-                    {currencyFormatter.format(item.price / 10, {
-                      code: "AUD"
-                    })}{" "}
-                    GST
-                  </Text>
+                  {item.price !== 0 ? (
+                    <Text style={styles.job_gst}>
+                      including{"\n"}
+                      {currencyFormatter.format(item.price / 10, {
+                        code: "AUD"
+                      })}{" "}
+                      GST
+                    </Text>
+                  ) : (
+                    <View style={{ flex: 1 }} />
+                  )}
                   <Image
                     style={styles.job_info_icon}
                     source={require("../../../../assets/icons/fees_info.png")}
