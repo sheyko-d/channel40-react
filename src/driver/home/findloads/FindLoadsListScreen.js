@@ -10,9 +10,11 @@ import {
   Alert
 } from "react-native";
 import Constants from "../../../util/Constants.js";
+import ProgressDialog from "../../../view/ProgressDialog.js";
 import Timestamp from "react-timestamp";
 var axios = require("axios");
 var currencyFormatter = require("currency-formatter");
+import { Manager as ModalManager } from "react-native-root-modal";
 
 const styles = StyleSheet.create({
   container: {
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
     fontFamily: "Graystroke-Regular",
     marginBottom: 4,
     lineHeight: 32,
-    marginTop: -4
+    marginTop: -6
   },
   job_id: {
     color: "#999999",
@@ -166,6 +168,7 @@ const styles = StyleSheet.create({
 });
 
 class FindLoadsListScreen extends React.Component {
+  modal = null;
   state = {};
 
   static navigationOptions = {
@@ -367,6 +370,9 @@ class FindLoadsListScreen extends React.Component {
 
   /* Retrieves jobs from server. */
   async loadNearbyJobs() {
+    // Create a Modal element on screen.
+    modal = new ModalManager(<ProgressDialog />);
+
     let api_token = await AsyncStorage.getItem("api_token");
     let latitude = await AsyncStorage.getItem("latitude");
     let longitude = await AsyncStorage.getItem("longitude");
@@ -382,10 +388,14 @@ class FindLoadsListScreen extends React.Component {
       headers: { Authorization: "Token " + api_token }
     })
       .then(response => {
+        modal.destroy();
+        
         this.displayJobs(response.data.RESPONSE.data);
         //console.log(response.data.RESPONSE.data);
       })
       .catch(function(error) {
+        modal.destroy();
+
         if (error.response) {
           Alert.alert("Server Error", JSON.stringify(error.response.data));
         } else {

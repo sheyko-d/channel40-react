@@ -96,6 +96,7 @@ class LoadingScreen extends React.Component {
   async componentDidMount() {
     await Font.loadAsync({
       "Graystroke-Regular": require("./assets/fonts/Graystroke-Regular.otf"),
+      "AvenirLTStd-Medium": require("./assets/fonts/AvenirLTStd-Medium.otf"),
       "AvenirLTStd-Black": require("./assets/fonts/AvenirLTStd-Black.otf"),
       "AvenirLTStd-Heavy": require("./assets/fonts/AvenirLTStd-Heavy.otf"),
       "Akkurat-Normal": require("./assets/fonts/Akkurat-Normal.ttf")
